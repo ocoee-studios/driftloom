@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DriftLoom — Phone Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Nunito',sans-serif;background:#0a0f1a;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.phone{width:375px;height:812px;border-radius:52px;border:8px solid #1a1a2e;background:#02040A;overflow:hidden;position:relative;box-shadow:0 40px 80px rgba(0,0,0,0.5),0 0 0 2px #333}
+.notch{width:140px;height:32px;background:#1a1a2e;border-radius:0 0 20px 20px;margin:0 auto;position:relative;z-index:10}
+.screen{height:calc(100% - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+.screen::-webkit-scrollbar{display:none}
+.hdr{padding:12px 18px 8px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:10px;font-weight:800;letter-spacing:3px;color:#4FCBFF}
+.title{font-size:20px;font-weight:700;color:#EAF6FF}
+.date{font-size:12px;color:#4FCBFF}
+.cnt{padding:0 16px 90px}
+.card{background:rgba(7,17,31,0.7);border:0.5px solid rgba(79,203,255,0.1);border-radius:18px;padding:14px;margin-bottom:12px}
+.dcard{background:linear-gradient(135deg,#02040A,#07111F);border:0.5px solid rgba(79,203,255,0.12);border-radius:18px;padding:14px;margin-bottom:12px}
+.eye{font-size:10px;font-weight:800;color:#d4a44c;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:8px}
+.tabs{position:absolute;bottom:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-around;background:rgba(2,4,10,0.95);border-top:0.5px solid rgba(79,203,255,0.1);z-index:10;padding-bottom:6px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:5px 7px;border-radius:10px;user-select:none;-webkit-user-select:none;transition:background 0.15s}
+.tab.on{background:rgba(79,203,255,0.08)}
+.tab .icon{font-size:16px}.tab span{font-size:9px;font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.pill{text-align:center;padding:10px 4px;border-radius:14px;cursor:pointer;transition:transform 0.1s}
+.pill:active{transform:scale(0.95)}
+.pill .em{font-size:18px;display:block}
+.pill span{font-size:11px;font-weight:700;display:block;margin-top:2px}
+.btn{padding:12px;border-radius:16px;background:#4FCBFF;text-align:center;cursor:pointer;margin-bottom:10px;transition:transform 0.1s}
+.btn:active{transform:scale(0.97)}
+.btn span{color:#02040A;font-weight:700;font-size:14px}
+.btn2{padding:12px;border-radius:16px;border:1.5px solid #4FCBFF;text-align:center;cursor:pointer;margin-bottom:10px}
+.btn2 span{color:#4FCBFF;font-weight:700;font-size:14px}
+.inp{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(79,203,255,0.1);background:transparent;color:#EAF6FF;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit}
+textarea.inp{resize:none}
+.stcard{background:rgba(7,17,31,0.7);border:0.5px solid rgba(79,203,255,0.1);border-radius:18px;margin-bottom:10px;overflow:hidden}
+.stbar{height:3px}.stcnt{padding:12px 14px}
+.flex{display:flex;align-items:center;gap:10px}
+.orb{width:36px;height:36px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.modal{position:absolute;inset:0;background:rgba(2,4,10,0.96);z-index:20;overflow-y:auto;padding:24px 16px;display:none}
+.modal.show{display:block}
+.moongrid .pill{border:0.5px solid rgba(79,203,255,0.1);background:rgba(14,43,92,0.3)}
+.moongrid .pill.on{border:1.5px solid #4FCBFF;background:rgba(79,203,255,0.12)}
+.moondetail{margin-top:8px;padding:12px;border-radius:14px;border:0.5px solid rgba(79,203,255,0.15)}
+.check{width:20px;height:20px;border-radius:5px;border:2px solid #4FCBFF;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:12px;color:white;transition:background 0.15s}
+.check.on{background:#4FCBFF}
+.ice{color:#EAF6FF}.sil{color:#C7D0DB}.mut{color:#6B7D8D}.cy{color:#4FCBFF}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen" id="scr">
+    <div class="hdr">
+      <div><div class="brand">DRIFTLOOM</div><div class="title" id="tabTitle">Dream journal</div></div>
+      <div class="date" id="dateStr"></div>
+    </div>
+    <div class="cnt" id="content"></div>
+    <div class="tabs" id="tabBar"></div>
+    <div class="modal" id="paywall"></div>
+  </div>
+</div>
+
+<script>
+const tabs=[{i:"☽",l:"Home"},{i:"✎",l:"Journal"},{i:"✦",l:"Insights"},{i:"◑",l:"Cycles"},{i:"◌",l:"Lucid"},{i:"❋",l:"Dict."},{i:"⚙",l:"Settings"}];
+const titles=["Dream journal","New dream","Dream insights","Dream cycles","Lucid dreaming","Dream dictionary","Settings"];
+let cur=0,moonSel=null,zodSel=null;
+const d=new Date().getDay();
+document.getElementById("dateStr").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+
+function renderTabs(){
+  document.getElementById("tabBar").innerHTML=tabs.map((t,i)=>`<div class="tab ${i===cur?"on":""}" onclick="switchTab(${i})"><div class="icon" style="color:${i===cur?"#4FCBFF":"#6B7D8D"}">${t.i}</div><span style="color:${i===cur?"#4FCBFF":"#6B7D8D"}">${t.l}</span></div>`).join("");
+}
+function switchTab(i){cur=i;document.getElementById("tabTitle").textContent=titles[i];renderTabs();render();document.getElementById("scr").scrollTop=0;}
+function showPay(){
+  const el=document.getElementById("paywall");el.classList.add("show");
+  el.innerHTML=`<div style="text-align:center;margin:30px 0 20px"><div style="font-size:36px">🌀</div><div style="font-size:22px;font-weight:700;color:#EAF6FF;margin-top:8px">Unlock DriftLoom</div><div style="font-size:13px;color:#6B7D8D;margin-top:4px">AI dream analysis & all premium features</div></div>
+  <div style="padding:14px;border-radius:16px;background:rgba(79,203,255,0.06);border:1.5px solid rgba(79,203,255,0.2);margin-bottom:10px;position:relative"><div style="position:absolute;top:-8px;right:12px;font-size:10px;font-weight:800;color:white;background:#2ecc71;padding:2px 10px;border-radius:99px">BEST VALUE</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#6B7D8D">🌙 Annual — Save 50%</span><span style="font-size:18px;font-weight:700;color:#EAF6FF">$29.99/yr</span></div><div style="font-size:12px;color:#6B7D8D;margin-top:4px">7-day free trial, then $29.99/year</div></div>
+  <div style="padding:14px;border-radius:16px;background:rgba(7,17,31,0.7);border:0.5px solid rgba(79,203,255,0.1);margin-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#6B7D8D">Monthly</span><span style="font-size:18px;font-weight:700;color:#EAF6FF">$3.99/mo</span></div><div style="font-size:12px;color:#6B7D8D;margin-top:4px">Auto-renews monthly</div></div>
+  <div style="padding:14px;border-radius:16px;background:rgba(7,17,31,0.7);border:0.5px solid rgba(79,203,255,0.15);margin-bottom:14px;position:relative"><div style="position:absolute;top:-8px;left:12px;font-size:10px;font-weight:800;color:white;background:#4FCBFF;padding:2px 10px;border-radius:99px">FOUNDER</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#6B7D8D">Lifetime — Pay once</span><span style="font-size:18px;font-weight:700;color:#EAF6FF">$39.99</span></div><div style="font-size:12px;color:#6B7D8D;margin-top:4px">One-time purchase. All features, forever.</div></div>
+  <div class="btn" onclick="document.getElementById('paywall').classList.remove('show')"><span>Start 7-Day Free Trial</span></div>
+  <div style="font-size:10px;color:rgba(234,246,255,0.25);text-align:center;line-height:1.6;margin:10px 0">Payment charged to Apple ID. Subscriptions auto-renew unless turned off 24 hours before period end. Lifetime is one-time.</div>
+  <div style="display:flex;justify-content:center;gap:16px;margin-top:6px"><span style="font-size:12px;color:rgba(79,203,255,0.5);text-decoration:underline">Terms of Use</span><span style="font-size:12px;color:rgba(79,203,255,0.5);text-decoration:underline">Privacy Policy</span></div>
+  <div style="display:flex;justify-content:center;gap:16px;margin-top:6px"><span style="font-size:12px;color:rgba(79,203,255,0.4);text-decoration:underline">Manage Subscription</span><span style="font-size:12px;color:rgba(79,203,255,0.4);text-decoration:underline">Restore Purchases</span></div>
+  <div style="font-size:12px;color:#6B7D8D;text-align:center;margin-top:14px;cursor:pointer" onclick="document.getElementById('paywall').classList.remove('show')">Continue with free features</div>`;
+}
+function render(){const c=document.getElementById("content");if(cur===0)c.innerHTML=home();else if(cur===1)c.innerHTML=journal();else if(cur===2)c.innerHTML=insights();else if(cur===3)c.innerHTML=cycles();else if(cur===4)c.innerHTML=lucid();else if(cur===5)c.innerHTML=dictionary();else c.innerHTML=settings();}
+
+function home(){
+  const syms=["🌙 Moon — Trust intuition","⭐ Stars — Seek direction","🗝 Key — Unlock doors","🪶 Feather — Let go","🦋 Butterfly — Embrace change","🔥 Fire — Follow passion","🌊 Ocean — Dive deep"];
+  const facts=["90% of dreams fade in 10 minutes.","Blind people dream with sounds and touch.","You only dream faces you've seen before.","Dogs twitch during REM — they dream too.","You have 4-6 dreams every single night.","12% of people dream in black and white.","Toddlers don't appear in own dreams until age 3."];
+  const w=["Sunday dreams are reflective — processing the week.","Monday dreams carry weekend energy. Good for vivid imagery.","Tuesday is peak creativity night. Set a bold intention.","Midweek dreams process stress and decisions.","Thursday dreams preview the weekend ahead.","Friday dreams are the most vivid of the week.","Saturday: no alarms, longer REM. Best recall day."];
+  return `<div class="card"><div style="font-size:22px;font-weight:700;color:#EAF6FF">Good evening, dreamer</div><div style="font-size:13px;color:#6B7D8D;margin-top:4px">🌓 First Quarter · 0 dreams captured</div><div style="display:flex;gap:8px;margin-top:14px"><div class="btn" style="flex:1" onclick="switchTab(1)"><span>✍️ Write Dream</span></div><div class="btn2" style="flex:1"><span>🎙 Record</span></div></div></div>
+  <div class="dcard"><div class="flex"><svg width="52" height="52" viewBox="0 0 60 60" style="transform:rotate(-90deg)"><circle cx="30" cy="30" r="24" fill="none" stroke="rgba(79,203,255,0.1)" stroke-width="5"/><circle cx="30" cy="30" r="24" fill="none" stroke="#4FCBFF" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 157"/></svg><div><div style="font-size:10px;font-weight:800;color:rgba(79,203,255,0.4);letter-spacing:1px;text-transform:uppercase">Dream Score</div><div style="font-size:12px;color:#6B7D8D">0 dreams logged</div></div></div></div>
+  <div class="card"><div class="flex" style="margin-bottom:8px"><div style="width:40px;height:40px;border-radius:14px;background:rgba(79,203,255,0.08);display:flex;align-items:center;justify-content:center;font-size:20px">${["🌙","⭐","🗝","🪶","🦋","🔥","🌊"][d]}</div><div><div style="font-size:10px;font-weight:800;color:#d4a44c;letter-spacing:1px;text-transform:uppercase">Symbol of the Day</div><div style="font-size:13px;font-weight:700;color:#EAF6FF">${syms[d]}</div></div></div><div style="border-top:1px solid rgba(79,203,255,0.1);padding-top:8px"><div style="font-size:10px;font-weight:800;color:#d4a44c;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">💡 Dream Fact</div><div style="font-size:13px;color:#C7D0DB">${facts[d]}</div></div></div>
+  <div class="card"><div class="eye">🌙 Moon Phase</div><div style="font-size:18px;font-weight:700;text-align:center;color:#EAF6FF">🌓 First Quarter</div></div>
+  <div class="card"><div class="eye">🎵 Sleep Sounds</div><div class="grid4">${[["🌧","Rain","#4FCBFF"],["🌊","Ocean","#0E9AAA"],["🔥","Fire","#ff6b6b"],["🌲","Forest","#2ecc71"],["🌬","Wind","#9b59b6"],["🦗","Night","#6B7D8D"],["🎹","Piano","#4FCBFF"],["🕊","Silence","#d4a44c"]].map(s=>`<div class="pill" style="background:${s[2]}10;border:0.5px solid ${s[2]}22"><div class="em">${s[0]}</div><span style="color:${s[2]}">${s[1]}</span></div>`).join("")}</div></div>
+  <div class="dcard"><div class="eye">☁️ Cloud Rooms</div><div style="font-size:16px;font-weight:700;text-align:center;color:#EAF6FF;margin-bottom:10px">Step into your mood</div><div class="grid3">${[["🌫","Calm Mist","#4FCBFF"],["✨","Starlight","#ffd700"],["🌊","Ocean","#0E9AAA"],["🔥","Ember","#ff6b6b"],["🌙","Moon","#4FCBFF"],["🌌","Aurora","#9b59b6"]].map(r=>`<div class="pill" style="background:${r[2]}10;border:0.5px solid ${r[2]}22"><div class="em">${r[0]}</div><span style="color:${r[2]}">${r[1]}</span></div>`).join("")}</div></div>
+  <div class="dcard"><div class="eye">🌙 Tonight's Forecast</div><div class="grid3">${[["72%","Vivid","#4FCBFF"],["15%","Lucid","#ffd700"],["8%","Nightmare","#ff6b6b"]].map(f=>`<div class="pill" style="background:${f[2]}10;border:0.5px solid ${f[2]}22"><span style="font-size:16px;font-weight:700;color:${f[2]}">${f[0]}</span><span style="color:#6B7D8D">${f[1]}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye">🌤 Dream Weather</div><div style="font-size:13px;color:#C7D0DB;line-height:1.7">${w[d]}</div></div>
+  <div class="card"><div class="eye">🌤 Daily Check-in</div><div class="grid2">${[["😊","Great"],["🙂","Good"],["😐","Okay"],["😔","Low"],["😴","Tired"],["😰","Anxious"],["🥰","Loved"],["✨","Inspired"],["🌧","Sad"],["🔥","Motivated"],["🤔","Reflective"],["😌","Peaceful"]].map(f=>`<div class="pill" style="border:1px solid rgba(79,203,255,0.1);padding:8px;display:flex;align-items:center;gap:8px;text-align:left"><span style="font-size:18px">${f[0]}</span><span style="color:#EAF6FF;font-size:12px">${f[1]}</span></div>`).join("")}</div></div>`;
+}
+
+function journal(){
+  return `<div class="card"><div class="eye" style="text-align:left">Dream Title</div><input class="inp" placeholder="Name your dream..."></div>
+  <div class="card"><div class="eye" style="text-align:left">What Happened?</div><textarea class="inp" style="height:90px" placeholder="Describe your dream..."></textarea></div>
+  <div class="card"><div class="eye" style="text-align:left">How Did It Feel?</div><div class="grid3">${["Calm","Happy","Anxious","Peaceful","Mysterious","Vivid","Nostalgic","Dreamy","Surreal","Powerful","Lost","Free","Magical","Warm","Intense","Romantic","Hopeful","Enchanted"].map(m=>`<div class="pill" style="border:1px solid rgba(79,203,255,0.1);padding:7px 2px"><span style="color:#EAF6FF;font-size:11px">${m}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye" style="text-align:left">Dream Genre</div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px">${[["🎬","Thriller"],["💕","Romance"],["🚀","Sci-Fi"],["🧙","Fantasy"],["😂","Comedy"],["👻","Horror"],["🔍","Mystery"],["⚔️","Adventure"],["🎭","Drama"],["🌀","Surreal"]].map(g=>`<div class="pill" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1)"><div class="em" style="font-size:16px">${g[0]}</div><span style="color:#6B7D8D;font-size:8px">${g[1]}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye" style="text-align:left">Symbols & Tags</div><input class="inp" placeholder="water, flying, forest..."></div>
+  <div class="btn"><span>💾 Save Dream</span></div>
+  <div class="btn2" onclick="showPay()"><span>🔮 Read This Dream</span></div>
+  <div class="dcard"><div class="eye">✨ Dream Card</div><div style="padding:14px;border-radius:14px;background:rgba(79,203,255,0.06);border:0.5px solid rgba(79,203,255,0.1);text-align:center"><div>🌓</div><div style="font-size:16px;font-weight:700;color:#EAF6FF;margin-top:4px">Untitled Dream</div><div style="font-size:12px;color:#6B7D8D;margin-top:6px">🌙 — · ✨ 50% vivid</div><div style="font-size:11px;color:rgba(234,246,255,0.2);margin-top:8px">dreamed with DriftLoom</div></div></div>`;
+}
+
+function insights(){
+  return `<div class="card"><div class="eye">✨ AI Pattern Analysis</div><div style="font-size:13px;color:#6B7D8D;text-align:center;margin-bottom:10px">Log your first dream to unlock</div><div class="btn" onclick="showPay()"><span>🔒 Unlock AI Analysis</span></div></div>
+  <div class="card"><div class="eye">📊 Dream Statistics</div><div class="grid3">${[["📝","0","Total"],["🌙","—","Top Mood"],["💫","0%","Avg Vivid"]].map(s=>`<div class="pill" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1)"><div class="em" style="font-size:14px">${s[0]}</div><span style="font-size:16px;font-weight:700;color:#EAF6FF">${s[1]}</span><span style="color:#6B7D8D;font-size:10px">${s[2]}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye">💜 Daily Affirmation</div><div style="font-size:16px;font-weight:700;font-style:italic;text-align:center;color:#EAF6FF;line-height:1.5">${["Your dreams are letters from your deeper self.","Every dream makes the next one clearer.","Your subconscious is wiser than you know.","Tonight's dreams are already forming.","The patterns reveal who you're becoming.","You author your dream world.","Each dream is a gift."][d]}</div></div>
+  <div class="card"><div class="eye">🏆 Achievements</div><div class="grid3">${[["🌱","First Dream"],["🔥","3-Day"],["⚡","Vivid"],["🌙","Moon Child"],["🦋","Finder"],["👑","Master"]].map(a=>`<div class="pill" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1);opacity:0.4"><div class="em">${a[0]}</div><span style="color:#6B7D8D;font-size:9px">${a[1]}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye">♈ Dream Zodiac</div><div class="grid4" id="zodGrid">${[["♈","Aries","#ff6b6b","Bold action dreams"],["♉","Taurus","#4ecdc4","Nature-rich"],["♊","Gemini","#ffd700","Shifting scenes"],["♋","Cancer","#4FCBFF","Family-centered"],["♌","Leo","#ff9f43","Spotlight"],["♍","Virgo","#a8e6cf","Problem-solving"],["♎","Libra","#4FCBFF","Relationships"],["♏","Scorpio","#c44569","Transformative"],["♐","Sag.","#f8b739","Adventure"],["♑","Cap.","#778ca3","Structure"],["♒","Aqua.","#45aaf2","Futuristic"],["♓","Pisces","#a55eea","Mystical"]].map((z,i)=>`<div class="pill" onclick="toggleZod(${i})" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1);cursor:pointer" id="zod${i}"><div class="em" style="font-size:18px">${z[0]}</div><span style="color:#6B7D8D;font-size:8px">${z[1]}</span></div>`).join("")}</div><div id="zodDetail"></div></div>
+  <div class="card"><div class="eye">🌙 The Moon's Journey</div><div class="grid4 moongrid" id="moonGrid">${["🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘"].map((m,i)=>`<div class="pill" onclick="toggleMoon(${i})" style="cursor:pointer" id="moon${i}"><div class="em" style="font-size:22px">${m}</div><span style="color:#6B7D8D;font-size:7px">${["New","Waxing C.","First Q.","Waxing G.","Full","Waning G.","Last Q.","Waning C."][i]}</span></div>`).join("")}</div><div id="moonDetail"></div></div>
+  <div class="card"><div class="eye">📖 Dream Wisdom</div><div style="font-size:16px;font-weight:700;font-style:italic;text-align:center;color:#EAF6FF;line-height:1.5">"Dreams are the royal road to the unconscious."</div><div style="font-size:13px;color:#4FCBFF;font-weight:700;text-align:center;margin-top:6px">— Freud</div></div>`;
+}
+
+function cycles(){
+  const stgs=[["🌅","Awake & Winding Down","Threshold","#d4a44c","Melatonin rises, thoughts loosen. Set a dream intention.","5-20 min · Alpha → Theta"],["🌊","N1 — Light Drift","NREM","#4FCBFF","You hover between awareness and sleep. Brief surreal flashes.","1-7 min · Theta · ~5% of sleep"],["💫","N2 — The Weaving","NREM","#1a6cd4","Sleep spindles sort memories and lock in learning.","10-25 min · Spindles · ~45%"],["🌑","N3 — Deep Restoration","Slow-wave","#0E2B5C","Slow delta waves. Your body repairs tissue, strengthens immunity.","20-40 min · Delta · ~25%"],["✨","REM — Dream Theatre","REM","#4FCBFF","Most vivid dreams unfold here. Eyes dance, brain lights up.","10-60 min · Beta-like · ~25%"]];
+  return `<div class="card"><div class="eye">Architecture of Sleep</div><div class="grid4">${[["🌊","Light","#4FCBFF"],["🌑","Deep","#0E2B5C"],["✨","REM","#4FCBFF"],["💫","Recall","#d4a44c"]].map(r=>`<div class="pill" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1)"><div class="orb" style="background:${r[2]};margin:0 auto 4px">${r[0]}</div><span style="color:#EAF6FF;font-size:11px">${r[1]}</span></div>`).join("")}</div></div>
+  ${stgs.map(s=>`<div class="stcard"><div class="stbar" style="background:${s[3]}"></div><div class="stcnt"><div class="flex" style="margin-bottom:6px"><div class="orb" style="background:${s[3]}">${s[0]}</div><div><div style="font-size:16px;font-weight:800;color:#EAF6FF">${s[1]}</div><div style="font-size:10px;font-weight:800;color:${s[3]};text-transform:uppercase;letter-spacing:1px">${s[2]}</div></div></div><div style="font-size:12px;color:#C7D0DB;line-height:1.6;margin-bottom:6px">${s[4]}</div><div style="font-size:10px;color:#6B7D8D">${s[5]}</div></div></div>`).join("")}
+  <div class="dcard"><div class="eye">🌙 Sleep Tonight</div><div style="font-size:32px;font-weight:700;text-align:center;color:#EAF6FF">Good</div><div class="grid3" style="margin-top:10px">${[["😴","5/10","Sleep","#ffb347"],["😰","5/10","Stress","#4FCBFF"],["⚡","5/10","Energy","#ffb347"]].map(s=>`<div class="pill" style="background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.06)"><div class="em" style="font-size:14px">${s[0]}</div><span style="font-size:16px;font-weight:700;color:${s[3]}">${s[1]}</span><span style="color:#6B7D8D;font-size:10px">${s[2]}</span></div>`).join("")}</div></div>`;
+}
+
+function lucid(){
+  return `<div class="card"><div class="eye">What is Lucid Dreaming?</div><div style="font-size:12px;color:#C7D0DB;text-align:center;line-height:1.6;margin-bottom:12px">A lucid dream is when you realize you're dreaming while still inside. With practice, you can take control.</div><div class="grid3">${[["55%","have had one"],["23%","monthly"],["11%","weekly"]].map(s=>`<div class="pill" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1)"><span style="font-size:16px;font-weight:700;color:#4FCBFF">${s[0]}</span><span style="color:#6B7D8D">${s[1]}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye">✋ Reality Checks</div>${["Look at your hands — do they look normal?","Read text twice — it changes in dreams","Push finger through palm — may pass through","Check the time — clocks behave strangely"].map((r,i)=>`<div class="flex" style="padding:10px 0;${i<3?"border-bottom:1px solid rgba(79,203,255,0.1)":""}"><div class="check" id="chk${i}" onclick="toggleCheck(${i})"></div><span style="font-size:13px;font-weight:600;color:#EAF6FF">${r}</span></div>`).join("")}</div>
+  ${[["🧠","MILD","Mnemonic Induction","As you fall asleep, repeat: 'Next time I dream, I will realize I'm dreaming.'"],["👁","WILD","Wake Initiated","Stay conscious as your body falls asleep. Focus on hypnagogic imagery."],["⏰","WBTB","Wake Back To Bed","Alarm at 5 hours. Stay awake 20 min. Sleep with lucid intent."]].map(t=>`<div class="card"><div class="flex" style="margin-bottom:8px"><div class="orb" style="background:#4FCBFF">${t[0]}</div><div><div style="font-size:16px;font-weight:700;color:#EAF6FF">${t[1]}</div><div style="font-size:10px;font-weight:700;color:#4FCBFF;text-transform:uppercase;letter-spacing:1px">${t[2]}</div></div></div><div style="font-size:12px;color:#C7D0DB;line-height:1.6">${t[3]}</div></div>`).join("")}
+  <div class="card"><div class="eye">✨ Benefits</div>${["Overcome nightmares by taking control","Boost creativity and problem-solving","Practice real-world skills in sleep","Deepen self-awareness and emotional insight"].map(b=>`<div class="flex" style="margin-bottom:6px"><span style="color:#4FCBFF;font-size:12px">✦</span><span style="font-size:12px;color:#C7D0DB">${b}</span></div>`).join("")}</div>`;
+}
+
+function dictionary(){
+  const d=[["🌙","Moon","Symbols","Intuition and emotional cycles."],["⭐","Stars","Symbols","Hope and guidance."],["🗝","Key","Symbols","Hidden knowledge."],["🪞","Mirror","Symbols","Self-awareness and truth."],["🚪","Door","Symbols","New opportunities."],["🐍","Snake","Animals","Transformation."],["🦋","Butterfly","Animals","Rebirth."],["🐱","Cat","Animals","Independence."],["🐺","Wolf","Animals","Loyalty and instinct."],["🐦","Bird","Animals","Freedom and perspective."],["💧","Water","Elements","Emotional state."],["🔥","Fire","Elements","Passion."],["🌧","Rain","Elements","Emotional release."],["🌊","Ocean","Places","The unconscious mind."],["🏠","House","Places","Your self and psyche."],["🕊","Flying","Actions","Freedom."],["⬇️","Falling","Actions","Loss of control."],["🏃","Running","Actions","Avoidance or pursuit."],["💎","Lucid","Types","Self-awareness in sleep."],["🌑","Nightmare","Types","Processing fear."],["🔄","Recurring","Types","Unresolved message."]];
+  return `<div style="display:flex;align-items:center;gap:8px;padding:10px;border-radius:14px;border:1px solid rgba(79,203,255,0.1);background:rgba(7,17,31,0.7);margin-bottom:10px"><span style="color:#6B7D8D">🔍</span><input class="inp" style="border:none;padding:0" placeholder="Search symbols..."></div>
+  <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">${["✦ All","🔮 Symbols","🦋 Animals","🌊 Elements","🏛 Places","🕊 Actions","💫 Types"].map((c,i)=>`<div style="padding:5px 10px;border-radius:99px;border:${i===0?"1.5px solid #4FCBFF":"1px solid rgba(79,203,255,0.1)"};font-size:11px;font-weight:700;color:${i===0?"#4FCBFF":"#6B7D8D"};cursor:pointer">${c}</div>`).join("")}</div>
+  <div style="font-size:12px;color:#6B7D8D;margin-bottom:8px">${d.length} entries</div>
+  ${d.map(x=>`<div class="card" style="padding:10px 12px"><div class="flex"><div class="orb" style="background:rgba(14,43,92,0.3);border:0.5px solid rgba(79,203,255,0.1);font-size:18px">${x[0]}</div><div style="flex:1"><div style="font-size:14px;font-weight:700;color:#EAF6FF">${x[1]}</div><div style="font-size:9px;font-weight:700;color:#4FCBFF;text-transform:uppercase;letter-spacing:1px">${x[2]}</div></div><span style="color:#6B7D8D;font-size:13px">▼</span></div></div>`).join("")}`;
+}
+
+function settings(){
+  return `<div class="card"><div class="eye">Theme</div><div class="grid3">${[["🌑","Midnight"],["🌊","Deep Ocean"],["🧊","Glacier"]].map((t,i)=>`<div class="pill" style="background:${i===0?"#0E2B5C":"rgba(14,43,92,0.3)"};border:${i===0?"2px solid #4FCBFF":"0.5px solid rgba(79,203,255,0.1)"};padding:12px 4px"><div class="em">${t[0]}</div><span style="color:#EAF6FF;font-size:11px">${t[1]}</span></div>`).join("")}</div></div>
+  <div class="card"><div class="eye">Ink Colors</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">${["#EAF6FF","#C7D0DB","#4FCBFF","#0E2B5C","#6B7D8D","#d4a44c","#a8d8ea","#1a6cd4","#b0bec5","#008080","#f5f5f5","#07111F"].map(c=>`<div style="width:24px;height:24px;border-radius:12px;background:${c};border:${c==="#4FCBFF"?"2px solid #4FCBFF":"2px solid rgba(79,203,255,0.1)"}"></div>`).join("")}</div><div style="padding:10px;border-radius:12px;border:1px solid rgba(79,203,255,0.1)"><span style="font-size:13px;font-style:italic;color:#4FCBFF">I was floating through soft lavender clouds...</span></div></div>
+  <div class="card"><div class="eye">Security</div>${[["🔒","App Lock"],["😊","Face ID / Touch ID"]].map((r,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;${i===0?"border-bottom:1px solid rgba(79,203,255,0.1)":""}"><span style="font-size:13px;color:#EAF6FF">${r[0]} ${r[1]}</span><div style="width:40px;height:22px;border-radius:11px;background:#4FCBFF;display:flex;align-items:center;justify-content:flex-end;padding:2px"><div style="width:18px;height:18px;border-radius:9px;background:white"></div></div></div>`).join("")}</div>
+  <div class="card"><div class="eye">Data</div>${["📤 Export Dream Journal","🗑 Reset Dream Journal"].map((b,i)=>`<div style="padding:10px;border-radius:12px;border:1px solid rgba(79,203,255,0.1);text-align:center;margin-bottom:6px;cursor:pointer"><span style="font-size:13px;color:${i===1?"#ff6b6b":"#EAF6FF"}">${b}</span></div>`).join("")}<div style="padding:10px;border-radius:12px;border:1px solid rgba(79,203,255,0.1);text-align:center;cursor:pointer" onclick="showPay()"><span style="font-size:13px;color:#4FCBFF">Preview Paywall</span></div></div>
+  <div class="card" style="text-align:center;padding:16px"><div style="font-size:36px">🌀</div><div style="font-size:18px;font-weight:700;color:#EAF6FF;margin-top:6px">DriftLoom</div><div style="font-size:12px;color:#6B7D8D">V4.0 · Ocoee Studios</div><div style="font-size:12px;color:#6B7D8D;margin-top:4px">Your dreams, decoded.</div><div style="display:flex;justify-content:center;gap:14px;margin-top:10px"><span style="font-size:12px;color:#4FCBFF;text-decoration:underline">Terms of Use</span><span style="font-size:12px;color:#4FCBFF;text-decoration:underline">Privacy Policy</span></div></div>`;
+}
+
+window.toggleMoon=function(i){
+  const names=["New Moon","Waxing Crescent","First Quarter","Waxing Gibbous","Full Moon","Waning Gibbous","Last Quarter","Waning Crescent"];
+  const descs=["A blank slate for dream intentions.","Dream recall sharpens. Capture every fragment.","Dreams carry choices and crossroads.","Dreams grow vivid. Peak vividness approaches.","Maximum illumination. Most vivid dreams of the cycle.","Integration phase. Review what your dreams revealed.","Release and forgiveness. Old patterns dissolve.","Deep rest and quiet dreaming. Surrender to sleep."];
+  moonSel=moonSel===i?null:i;
+  document.querySelectorAll(".moongrid .pill").forEach((el,j)=>{el.className="pill"+(j===moonSel?" on":"")});
+  document.getElementById("moonDetail").innerHTML=moonSel!==null?`<div class="moondetail"><div style="font-size:14px;font-weight:700;color:#EAF6FF">${names[i]}</div><div style="font-size:12px;color:#C7D0DB;line-height:1.6;margin-top:4px">${descs[i]}</div></div>`:"";
+};
+window.toggleZod=function(i){
+  const z=[["Aries","#ff6b6b","Bold, vivid action dreams"],["Taurus","#4ecdc4","Sensory, nature-rich dreams"],["Gemini","#ffd700","Dialogue-heavy, shifting scenes"],["Cancer","#4FCBFF","Emotional, family-centered"],["Leo","#ff9f43","Dramatic, spotlight dreams"],["Virgo","#a8e6cf","Detail-rich, problem-solving"],["Libra","#4FCBFF","Harmonious, relationship dreams"],["Scorpio","#c44569","Intense, transformative"],["Sagittarius","#f8b739","Adventure, travel dreams"],["Capricorn","#778ca3","Achievement, structure"],["Aquarius","#45aaf2","Futuristic, unusual"],["Pisces","#a55eea","Mystical, oceanic dreams"]];
+  zodSel=zodSel===i?null:i;
+  document.getElementById("zodDetail").innerHTML=zodSel!==null?`<div style="margin-top:8px;padding:10px;border-radius:12px;border:1px solid ${z[i][1]}33"><div style="font-size:14px;font-weight:700;color:#EAF6FF">${z[i][0]}</div><div style="font-size:12px;color:#C7D0DB;margin-top:2px">${z[i][2]}</div></div>`:"";
+};
+window.toggleCheck=function(i){const el=document.getElementById("chk"+i);el.classList.toggle("on");el.innerHTML=el.classList.contains("on")?"✓":"";};
+
+renderTabs();render();
+</script>
+</body>
+</html>
