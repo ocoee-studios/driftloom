@@ -103,12 +103,12 @@ KEY CONVERSIONS:
 
 DESIGN TOKENS (from the web app):
 --bg1: #f8f4ff (light lavender background)
---navy: #2c2c54 (primary text)
---lav: #b08df8 (accent purple) 
+--navy: #EAF6FF (primary text)
+--lav: #4FCBFF (accent purple) 
 --gold: #d4a44c (secondary accent)
 --deep: #4a4a6a (body text)
 --muted: #9a9ab0 (caption text)
---line: rgba(176,141,248,0.12) (borders)
+--line: rgba(79,203,255,0.12) (borders)
 --glass: rgba(255,255,255,0.72) (card background)
 Fonts: Cormorant Garamond (serif), Nunito (sans)
 
