@@ -1,0 +1,7 @@
+# EAS Build ignores
+node_modules/
+.expo/
+dist/
+docs/
+*.md
+.git/
