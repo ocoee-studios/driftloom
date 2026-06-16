@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "DriftLoom",
+    "slug": "driftloom",
+    "version": "4.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#02040A"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ocoeestudios.driftloom",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "DriftLoom uses Face ID to protect your private dream journal",
+        "NSMicrophoneUsageDescription": "DriftLoom uses the microphone to record dream voice notes"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#02040A"
+      },
+      "package": "com.ocoeestudios.driftloom"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-local-authentication",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.0"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "YOUR_EAS_PROJECT_ID"
+      }
+    },
+    "owner": "ocoeestudios",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/YOUR_EAS_PROJECT_ID"
+    }
+  }
+}
