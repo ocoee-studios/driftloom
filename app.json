@@ -1,27 +1,29 @@
 {
   "expo": {
-    "name": "DriftLoom",
+    "name": "Driftloom",
     "slug": "driftloom",
-    "version": "4.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#02040A"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.ocoeestudios.driftloom",
       "buildNumber": "1",
       "infoPlist": {
-        "NSFaceIDUsageDescription": "DriftLoom uses Face ID to protect your private dream journal",
-        "NSMicrophoneUsageDescription": "DriftLoom uses the microphone to record dream voice notes"
-      },
-      "config": {
-        "usesNonExemptEncryption": false
+        "NSFaceIDUsageDescription": "Driftloom uses Face ID to protect your private ideas.",
+        "NSMicrophoneUsageDescription": "Driftloom uses the microphone to capture voice memo fragments.",
+        "NSCameraUsageDescription": "Driftloom uses the camera to capture visual fragments.",
+        "NSPhotoLibraryUsageDescription": "Driftloom accesses your photo library to attach images to fragments.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
