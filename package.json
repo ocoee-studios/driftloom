@@ -1,11 +1,14 @@
 {
   "name": "driftloom",
-  "version": "1.2.0",
-  "main": "App.tsx",
+  "version": "4.0.0",
+  "main": "App.js",
   "scripts": {
     "start": "expo start",
     "dev": "expo start --dev-client",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
     "build:dev": "eas build --profile development --platform ios",
+    "build:preview": "eas build --profile preview --platform ios",
     "build:prod": "eas build --platform ios",
     "submit": "eas submit --platform ios",
     "setup": "chmod +x setup.sh && ./setup.sh"
@@ -16,24 +19,22 @@
     "expo-dev-client": "~5.0.0",
     "expo-font": "~13.0.0",
     "expo-haptics": "~14.0.0",
-    "expo-image-picker": "~16.0.0",
     "expo-linear-gradient": "~14.0.0",
     "expo-local-authentication": "~15.0.0",
-    "expo-av": "~15.0.0",
-    "expo-sharing": "~13.0.0",
-    "expo-mail-composer": "~14.0.0",
+    "expo-speech": "~13.0.0",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
     "react-native": "0.76.5",
     "react-native-purchases": "^8.0.0",
     "react-native-safe-area-context": "4.14.0",
     "react-native-screens": "~4.4.0",
-    "@react-native-async-storage/async-storage": "1.23.1"
+    "react-native-svg": "15.8.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-navigation/native": "^7.0.0",
+    "@react-navigation/bottom-tabs": "^7.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.0",
-    "typescript": "~5.3.0",
-    "@types/react": "~18.2.0"
+    "@babel/core": "^7.25.0"
   },
   "private": true
 }
