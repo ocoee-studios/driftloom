@@ -439,11 +439,11 @@ Assumptions:
 - 10,000 downloads/month
 - 40% start free trial (4,000)
 - 15% convert after trial (600 subscribers)
-- 70% choose annual ($29.99), 30% monthly ($4.99)
+- 70% choose annual ($29.99), 30% monthly ($3.99)
 
 Monthly revenue:
 - Annual: 420 × $29.99 / 12 = $1,049/mo
-- Monthly: 180 × $4.99 = $898/mo
+- Monthly: 180 × $3.99 = $898/mo
 - Total: ~$1,950/mo before Apple's cut
 - After 15% cut: ~$1,657/mo
 
@@ -454,7 +454,7 @@ Net margin: ~$1,297/mo = ~$15,564/year
 ## ⚠️ CRITICAL: Apple App Store Compliance
 
 ### Hardcoded Prices = REJECTION
-Apple REJECTS apps that display hardcoded prices like `$4.99` or `$29.99`. 
+Apple REJECTS apps that display hardcoded prices like `$3.99` or `$29.99`. 
 Prices MUST be fetched from StoreKit at runtime because:
 - Prices vary by country/region (€4.99, £3.99, ¥600, etc.)
 - Apple can change pricing tiers
@@ -553,7 +553,7 @@ const fetchPricing = async () => {
     // These are the REAL localized prices
     return {
       monthly: {
-        price: monthly.product.priceString,      // "$4.99" or "€4.99" etc
+        price: monthly.product.priceString,      // "$3.99" or "€4.99" etc
         priceNum: monthly.product.price,          // 4.99
         currency: monthly.product.currencyCode,   // "USD"
         introPrice: monthly.product.introPrice?.priceString, // "Free" for trial
@@ -614,7 +614,7 @@ const handlePurchase = async (packageToPurchase) => {
 ### App Store Connect Setup
 1. **Create Subscription Group**: "DriftLoom Premium"
 2. **Add Products**:
-   - `com.oceestudios.driftloom.monthly` — Auto-Renewable, $4.99/mo
+   - `com.oceestudios.driftloom.monthly` — Auto-Renewable, $3.99/mo
    - `com.oceestudios.driftloom.annual` — Auto-Renewable, $29.99/yr
 3. **Add Introductory Offer**:
    - Type: Free Trial
@@ -629,7 +629,7 @@ const handlePurchase = async (packageToPurchase) => {
 ### Google Play Console Setup
 1. **Create Subscription**: "driftloom_premium"
 2. **Add Base Plans**:
-   - Monthly: $4.99/mo with 7-day free trial
+   - Monthly: $3.99/mo with 7-day free trial
    - Annual: $29.99/yr with 7-day free trial
 3. **Add Offers**:
    - Free trial: 7 days, auto-converts to base plan
@@ -651,6 +651,6 @@ When converting to React Native, Claude Code should:
 Read the paywall in driftloom-polished.jsx (search for "Unlock the Portal").
 Replace all hardcoded prices with RevenueCat dynamic pricing.
 Use Purchases.getOfferings() to fetch real prices.
-Display pricing.monthly.price and pricing.annual.price instead of "$4.99" and "$29.99".
+Display pricing.monthly.price and pricing.annual.price instead of "$3.99" and "$29.99".
 Calculate savings dynamically. Handle loading state while prices fetch.
 ```
