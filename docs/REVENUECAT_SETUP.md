@@ -29,7 +29,7 @@ RevenueCat handles all in-app purchases so you never touch Apple receipts, Googl
 
 | Product ID | Reference Name | Duration | Price |
 |---|---|---|---|
-| `com.ocoeestudios.driftloom.monthly` | Monthly Premium | 1 Month | $4.99 |
+| `com.ocoeestudios.driftloom.monthly` | Monthly Premium | 1 Month | $3.99 |
 | `com.ocoeestudios.driftloom.annual` | Annual Premium | 1 Year | $29.99 |
 
 4. For the **Annual** plan:
@@ -41,7 +41,7 @@ RevenueCat handles all in-app purchases so you never touch Apple receipts, Googl
 
 | Product ID | Reference Name | Price |
 |---|---|---|
-| `com.ocoeestudios.driftloom.lifetime` | Lifetime Premium | $49.99 |
+| `com.ocoeestudios.driftloom.lifetime` | Lifetime Premium | $39.99 |
 
 7. For each product, add:
    - Display Name: "DriftLoom Premium"
@@ -192,7 +192,7 @@ const annual = offerings?.availablePackages.find(p => p.packageType === 'ANNUAL'
 const lifetime = offerings?.availablePackages.find(p => p.packageType === 'LIFETIME');
 
 // Display price from store (handles currency/locale):
-// monthly.product.priceString → "$4.99"
+// monthly.product.priceString → "$3.99"
 // annual.product.priceString → "$29.99"
 
 // Buy:
