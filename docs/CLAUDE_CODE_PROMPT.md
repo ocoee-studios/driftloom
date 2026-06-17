@@ -83,7 +83,7 @@ Replace hardcoded prices with RevenueCat:
 ```javascript
 import Purchases from 'react-native-purchases';
 Purchases.configure({ apiKey: 'YOUR_REVENUECAT_KEY' });
-// Offerings: monthly ($4.99), annual ($29.99), lifetime ($49.99)
+// Offerings: monthly ($3.99), annual ($29.99), lifetime ($39.99)
 ```
 
 ### 9. AI Backend
@@ -145,5 +145,5 @@ Convert Cycles and Lucid tabs. Cycles: intro card, 4 cycle rings, 5 sleep stage 
 
 ### Prompt 6 — Dictionary + Settings + Paywall:
 ```
-Convert Dictionary, Settings, and Paywall. Dictionary: search input, 7 category pills, 36 entries as expandable cards, "Add to dream" button. Settings: 3 themes, 12 ink colors (inline circles), 6 fonts, 5 backgrounds, security (lock + Face ID), watch sync, export, reset buttons. Paywall: modal with 3 tiers ($4.99/mo, $29.99/yr, $49.99 lifetime), trial CTA, Apple-compliant terms.
+Convert Dictionary, Settings, and Paywall. Dictionary: search input, 7 category pills, 36 entries as expandable cards, "Add to dream" button. Settings: 3 themes, 12 ink colors (inline circles), 6 fonts, 5 backgrounds, security (lock + Face ID), watch sync, export, reset buttons. Paywall: modal with 3 tiers ($3.99/mo, $29.99/yr, $39.99 lifetime), trial CTA, Apple-compliant terms.
 ```
