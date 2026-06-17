@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DriftLoom — Ideas + Dreams Combined</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;background:#0a0f1a;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.phone{width:375px;height:812px;border-radius:52px;border:8px solid #1a1a2e;background:#02040A;overflow:hidden;position:relative;box-shadow:0 40px 80px rgba(0,0,0,0.5),0 0 0 2px #222}
+.notch{width:140px;height:32px;background:#1a1a2e;border-radius:0 0 20px 20px;margin:0 auto;position:relative;z-index:10}
+.screen{height:calc(100% - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+.screen::-webkit-scrollbar{display:none}
+.hdr{padding:14px 18px 10px;display:flex;justify-content:space-between;align-items:center}
+.mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#0E2B5C,#4FCBFF);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#EAF6FF}
+.cnt{padding:0 16px 90px}
+.c{background:rgba(7,17,31,0.85);border:1px solid rgba(79,203,255,0.08);border-radius:16px;padding:16px;margin-bottom:12px}
+.cd{background:linear-gradient(135deg,#02040A,#07111F);border:1px solid rgba(79,203,255,0.06);border-radius:16px;padding:16px;margin-bottom:12px}
+.ca{background:linear-gradient(135deg,rgba(14,43,92,0.4),rgba(79,203,255,0.08));border:1px solid rgba(79,203,255,0.15);border-radius:16px;padding:16px;margin-bottom:12px}
+.lb{font-size:10px;font-weight:700;color:#5A6A7A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.lc{font-size:10px;font-weight:700;color:#4FCBFF;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.lg{font-size:10px;font-weight:700;color:#d4a44c;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+h2{font-size:18px;font-weight:700;color:#EAF6FF;margin-bottom:4px;letter-spacing:-0.3px}
+h3{font-size:15px;font-weight:700;color:#EAF6FF;letter-spacing:-0.2px}
+.b{font-size:13px;color:#C7D0DB;line-height:1.6}
+.bs{font-size:12px;color:#5A6A7A;line-height:1.5}
+.fx{display:flex;align-items:center;gap:10px}
+.fb{display:flex;justify-content:space-between;align-items:center}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.btn{padding:14px;border-radius:14px;background:#4FCBFF;text-align:center;cursor:pointer;margin-bottom:10px;font-weight:700;font-size:14px;color:#02040A}
+.bt2{padding:12px;border-radius:14px;border:1.5px solid #4FCBFF;text-align:center;cursor:pointer;margin-bottom:10px;font-weight:700;font-size:13px;color:#4FCBFF}
+.bg{padding:10px;border-radius:12px;border:1px solid rgba(79,203,255,0.08);text-align:center;cursor:pointer;font-size:13px;color:#C7D0DB}
+.inp{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(79,203,255,0.08);background:rgba(14,43,92,0.15);color:#EAF6FF;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit}
+.inp::placeholder{color:#5A6A7A}
+.bd{display:inline-block;padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700}
+.bc{background:rgba(79,203,255,0.12);color:#4FCBFF;border:1px solid rgba(79,203,255,0.2)}
+.bgo{background:rgba(212,164,76,0.12);color:#d4a44c;border:1px solid rgba(212,164,76,0.2)}
+.bgr{background:rgba(46,204,113,0.12);color:#2ecc71;border:1px solid rgba(46,204,113,0.2)}
+.st{text-align:center;padding:14px 8px;border-radius:14px;background:rgba(14,43,92,0.25);border:1px solid rgba(79,203,255,0.08)}
+.st .n{font-size:22px;font-weight:800;color:#EAF6FF;letter-spacing:-0.5px}
+.st .l{font-size:10px;color:#5A6A7A;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.dv{border-top:1px solid rgba(79,203,255,0.08);margin:12px 0}
+.or{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.fr{padding:14px;border-radius:14px;background:rgba(14,43,92,0.25);border:1px solid rgba(79,203,255,0.08);margin-bottom:8px;cursor:pointer}
+.pb{height:4px;border-radius:2px;background:rgba(79,203,255,0.1);margin-top:8px;overflow:hidden}
+.pf{height:100%;border-radius:2px;background:#4FCBFF}
+.sig{padding:16px;border-radius:16px;border:1.5px solid rgba(79,203,255,0.2);background:linear-gradient(135deg,rgba(14,43,92,0.3),rgba(79,203,255,0.05));margin-bottom:12px}
+.pl{padding:10px;border-radius:14px;text-align:center;cursor:pointer}
+.tabs{position:absolute;bottom:0;left:0;right:0;height:62px;display:flex;align-items:center;justify-content:space-around;background:rgba(2,4,10,0.96);border-top:1px solid rgba(79,203,255,0.08);z-index:10;padding-bottom:4px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 7px;border-radius:10px;user-select:none}
+.tab.on{background:rgba(79,203,255,0.08)}
+.stg{background:rgba(7,17,31,0.85);border:1px solid rgba(79,203,255,0.08);border-radius:16px;margin-bottom:10px;overflow:hidden}
+.mg .pl{border:0.5px solid rgba(79,203,255,0.08);background:rgba(14,43,92,0.25)}
+.mg .pl.on{border:1.5px solid #4FCBFF;background:rgba(79,203,255,0.12)}
+.md{margin-top:8px;padding:12px;border-radius:14px;border:0.5px solid rgba(79,203,255,0.15)}
+.modal{position:absolute;inset:0;background:rgba(2,4,10,0.96);z-index:20;overflow-y:auto;padding:24px 16px;display:none}
+.modal.show{display:block}
+</style>
+</head>
+<body>
+<div class="phone"><div class="notch"></div>
+<div class="screen" id="scr">
+<div class="hdr" id="hdr"></div>
+<div class="cnt" id="cnt"></div>
+<div class="tabs" id="bar"></div>
+<div class="modal" id="pay"></div>
+</div></div>
+<script>
+let t=0,ms=null;
+const T=["Today's Loom","Capture","Loom","Dreams","Vault","Settings"];
+const S=["Your creative momentum","Drop a fragment","Signals & patterns","Dream journal & sleep","Your archive","Preferences"];
+const tabs=[{i:"◉",l:"Today"},{i:"◎",l:"Capture"},{i:"◈",l:"Loom"},{i:"☽",l:"Dreams"},{i:"◇",l:"Vault"},{i:"⚙",l:"Settings"}];
+const d=new Date().getDay();
+
+function hdr(){document.getElementById("hdr").innerHTML=`<div class="fx"><div class="mark">D</div><div><div style="font-size:20px;font-weight:700;color:#EAF6FF">${T[t]}</div><div class="bs">${S[t]}</div></div></div>`;}
+function bar(){document.getElementById("bar").innerHTML=tabs.map((x,i)=>`<div class="tab ${i===t?"on":""}" onclick="go(${i})"><div style="font-size:16px;color:${i===t?"#4FCBFF":"#5A6A7A"}">${x.i}</div><span style="font-size:9px;font-weight:700;color:${i===t?"#4FCBFF":"#5A6A7A"}">${x.l}</span></div>`).join("");}
+function go(i){t=i;hdr();bar();rr();document.getElementById("scr").scrollTop=0;}
+function pay(){const e=document.getElementById("pay");e.classList.add("show");e.innerHTML=`<div style="text-align:center;margin:30px 0 20px"><div class="mark" style="width:48px;height:48px;border-radius:14px;font-size:24px;margin:0 auto">D</div><div style="font-size:22px;font-weight:700;color:#EAF6FF;margin-top:12px">DriftLoom Plus</div><div class="bs" style="margin-top:4px">Unlimited fragments + dreams, AI mentors, build plans</div></div><div style="padding:14px;border-radius:16px;background:rgba(79,203,255,0.06);border:1.5px solid rgba(79,203,255,0.2);margin-bottom:10px;position:relative"><div style="position:absolute;top:-8px;right:12px" class="bd bgr">BEST VALUE</div><div class="fb"><span class="b">Annual</span><span style="font-size:20px;font-weight:700;color:#EAF6FF">$29.99/yr</span></div><div class="bs" style="margin-top:4px">7-day free trial</div></div><div class="c"><div class="fb"><span class="b">Monthly</span><span style="font-size:20px;font-weight:700;color:#EAF6FF">$3.99/mo</span></div></div><div class="c" style="position:relative"><div style="position:absolute;top:-8px;left:12px" class="bd bc">FOUNDER</div><div class="fb"><span class="b">Lifetime</span><span style="font-size:20px;font-weight:700;color:#EAF6FF">$39.99</span></div><div class="bs" style="margin-top:4px">One-time. Forever.</div></div><div class="btn" onclick="document.getElementById('pay').classList.remove('show')">Start Free Trial</div><div style="text-align:center;font-size:12px;color:#5A6A7A;cursor:pointer;margin-top:12px" onclick="document.getElementById('pay').classList.remove('show')">Continue free</div>`;}
+
+function rr(){const c=document.getElementById("cnt");[today,capture,loom,dreams,vault,settings][t](c);}
+
+function today(c){
+  c.innerHTML=`
+  <div class="ca"><div class="fb"><div class="lc">CAPTURE STREAK</div><span class="bd bgo">🔥 3 days</span></div><div style="display:flex;gap:4px;margin-top:8px">${"MTWTFSS".split("").map((x,i)=>`<div style="width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;background:${i<3?"rgba(79,203,255,0.15)":"rgba(14,43,92,0.25)"};border:1px solid ${i<3?"rgba(79,203,255,0.3)":"rgba(79,203,255,0.08)"}">${i<3?"🔥":""}</div>`).join("")}</div><div class="bs" style="margin-top:8px">3 fragments + 2 dreams this week</div></div>
+  <div class="g4" style="margin-bottom:12px"><div class="st"><div class="n">12</div><div class="l">Fragments</div></div><div class="st"><div class="n">5</div><div class="l">Dreams</div></div><div class="st"><div class="n">3</div><div class="l">Projects</div></div><div class="st"><div class="n">2</div><div class="l">Signals</div></div></div>
+  <div class="sig"><div class="fb" style="margin-bottom:8px"><div class="lc" style="margin:0">🔗 SIGNAL FOUND</div><span class="bd bc">New</span></div><h3>App idea keeps surfacing</h3><div class="b" style="margin-top:4px">3 fragments + 1 dream about the same concept. Your subconscious is building something.</div><div class="bt2" style="margin-top:12px" onclick="go(2)">Explore signal →</div></div>
+  <div class="cd"><div class="fb"><div class="lg">🌙 TONIGHT'S DREAM</div><span class="bs">🌓 First Quarter</span></div><div style="display:flex;gap:8px;margin-top:10px">${[["72%","Vivid","#4FCBFF"],["15%","Lucid","#ffd700"],["8%","Nightmare","#ff6b6b"]].map(f=>`<div class="pl" style="flex:1;background:${f[2]}10;border:0.5px solid ${f[2]}22"><div style="font-size:16px;font-weight:700;color:${f[2]}">${f[0]}</div><div style="font-size:10px;color:#5A6A7A">${f[1]}</div></div>`).join("")}</div></div>
+  <div class="c"><div class="lb">💡 DAILY SPARK</div><h3>What problem keeps finding you?</h3><div class="b" style="margin-top:4px">The ideas that won't leave you alone are usually the ones worth building.</div><div class="bt2" style="margin-top:12px" onclick="go(1)">Capture a thought →</div></div>
+  <div class="c"><div class="lb">RECENT</div>${[{t:"📝",l:"Text",x:"What if there was an app for random thoughts?",w:"2h"},{t:"🌙",l:"Dream",x:"Flying over a city of glass towers, each one a different idea...",w:"Last night"},{t:"🎙",l:"Voice",x:"Voice memo about the design system idea",w:"Yesterday"},{t:"🌙",l:"Dream",x:"Underwater library — books dissolving into light",w:"2 nights ago"}].map(f=>`<div class="fr"><div class="fb"><div style="font-size:10px;font-weight:700;color:${f.t==="🌙"?"#4FCBFF":"#5A6A7A"};text-transform:uppercase;letter-spacing:1px">${f.t} ${f.l}</div><div class="bs">${f.w}</div></div><div style="font-size:13px;color:#EAF6FF;margin-top:4px;line-height:1.5">${f.x}</div></div>`).join("")}</div>
+  <div class="c"><div class="lg">☁️ CLOUD ROOMS</div><div class="g3">${[["🌫","Calm","#4FCBFF"],["✨","Starlight","#ffd700"],["🌊","Ocean","#0E9AAA"],["🔥","Ember","#ff6b6b"],["🌙","Moon","#4FCBFF"],["🌌","Aurora","#9b59b6"]].map(r=>`<div class="pl" style="background:${r[2]}10;border:0.5px solid ${r[2]}22"><div style="font-size:18px">${r[0]}</div><div style="font-size:10px;font-weight:700;color:${r[2]};margin-top:2px">${r[1]}</div></div>`).join("")}</div></div>
+  <div class="c"><div class="lg">🎵 SLEEP SOUNDS</div><div class="g4">${[["🌧","Rain","#4FCBFF"],["🌊","Ocean","#0E9AAA"],["🔥","Fire","#ff6b6b"],["🌲","Forest","#2ecc71"],["🌬","Wind","#9b59b6"],["🦗","Night","#5A6A7A"],["🎹","Piano","#4FCBFF"],["🕊","Silence","#d4a44c"]].map(s=>`<div class="pl" style="background:${s[2]}10;border:0.5px solid ${s[2]}22"><div style="font-size:16px">${s[0]}</div><div style="font-size:9px;font-weight:700;color:${s[2]};margin-top:2px">${s[1]}</div></div>`).join("")}</div></div>`;
+}
+
+function capture(c){
+  c.innerHTML=`
+  <div class="c"><div class="lb">CAPTURE TYPE</div><div class="g3">${[["📝","Text","#4FCBFF"],["🌙","Dream","#a55eea"],["🎙","Voice","#ff9f43"],["📸","Camera","#2ecc71"],["🔗","Link","#45aaf2"],["💡","Spark","#ffd700"]].map(x=>`<div class="pl" style="background:${x[2]}10;border:1px solid ${x[2]}22"><div style="font-size:22px">${x[0]}</div><div style="font-size:11px;font-weight:700;color:${x[2]};margin-top:4px">${x[1]}</div></div>`).join("")}</div></div>
+  <div class="c"><div class="lb">YOUR FRAGMENT</div><textarea class="inp" style="resize:none;min-height:80px" placeholder="Drop an idea, dream, observation..."></textarea></div>
+  <div class="c"><div class="lb">TAGS</div><input class="inp" placeholder="app idea, dream, design, ux..."><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">${["app idea","dream","design","ux","writing","music","startup"].map(x=>`<span class="bd bc" style="cursor:pointer">${x}</span>`).join("")}</div></div>
+  <div class="btn">Drop Fragment ↓</div>
+  <div class="dv" style="margin:16px 0;text-align:center"><span class="bs">— or log a dream —</span></div>
+  <div class="c" style="border-color:rgba(165,94,234,0.15)"><div style="font-size:10px;font-weight:700;color:#a55eea;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">🌙 DREAM ENTRY</div><input class="inp" placeholder="Dream title..." style="margin-bottom:8px"><textarea class="inp" style="resize:none;min-height:80px" placeholder="What happened in your dream?"></textarea>
+  <div style="margin-top:10px"><div class="lb">MOOD</div><div class="g3" style="gap:6px">${["Calm","Vivid","Surreal","Peaceful","Mysterious","Powerful","Magical","Nostalgic","Intense"].map(m=>`<div class="pl" style="border:1px solid rgba(79,203,255,0.08);padding:6px"><span style="font-size:11px;font-weight:700;color:#EAF6FF">${m}</span></div>`).join("")}</div></div>
+  <div style="margin-top:10px"><div class="lb">GENRE</div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">${[["🎬","Thriller"],["💕","Romance"],["🚀","Sci-Fi"],["🧙","Fantasy"],["😂","Comedy"],["👻","Horror"],["🔍","Mystery"],["⚔️","Adventure"],["🎭","Drama"],["🌀","Surreal"]].map(g=>`<div class="pl" style="background:rgba(14,43,92,0.25);border:0.5px solid rgba(79,203,255,0.08);padding:6px"><div style="font-size:14px">${g[0]}</div><div style="font-size:7px;font-weight:700;color:#5A6A7A">${g[1]}</div></div>`).join("")}</div></div>
+  <div style="margin-top:10px"><div class="lb">SYMBOLS</div><input class="inp" placeholder="water, flying, forest..."></div>
+  <div class="btn" style="margin-top:12px;background:#a55eea;color:white">💾 Save Dream</div>
+  <div class="bt2" style="border-color:#a55eea;color:#a55eea" onclick="pay()">🔮 Read This Dream</div></div>`;
+}
+
+function loom(c){
+  const moons=["🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘"];
+  const mn=["New Moon","Waxing Crescent","First Quarter","Waxing Gibbous","Full Moon","Waning Gibbous","Last Quarter","Waning Crescent"];
+  c.innerHTML=`
+  <div class="sig"><div class="fb" style="margin-bottom:10px"><div class="lc" style="margin:0">🔗 SIGNAL #1</div><span class="bd bc">Strong</span></div><h2>Creative capture tool</h2><div class="b" style="margin-top:6px">5 fragments + 2 dreams connect to this concept. Your waking mind AND your subconscious are circling the same idea.</div><div class="dv"></div>
+  <div class="lb">CONNECTED</div>${[["📝","App for random thoughts"],["🌙","Dream: city of glass towers = ideas"],["🎙","Voice: better capture flow"],["📸","Screenshot of note-taking UI"],["🌙","Dream: underwater library"],["🔗","Article: second-brain apps"],["💡","Fragments → projects pipeline"]].map((f,i)=>`<div class="fx" style="padding:6px 0;${i<6?"border-bottom:1px solid rgba(79,203,255,0.08)":""}"><div class="or" style="background:rgba(14,43,92,0.25);border:1px solid rgba(79,203,255,0.08);font-size:12px">${f[0]}</div><div style="font-size:12px;color:#C7D0DB">${f[1]}</div></div>`).join("")}
+  <div class="btn" style="margin-top:14px" onclick="pay()">🧠 Synthesize with AI Mentor</div></div>
+
+  <div class="c"><div class="lb">AI MENTORS</div><div class="g3">${[["🧠","Founder"],["🎨","Designer"],["✍️","Writer"],["🎬","Filmmaker"],["🎮","Game Dev"],["🔬","Researcher"]].map(m=>`<div class="pl" style="background:rgba(14,43,92,0.25);border:1px solid rgba(79,203,255,0.08)"><div style="font-size:20px">${m[0]}</div><div style="font-size:10px;font-weight:700;color:#C7D0DB;margin-top:3px">${m[1]}</div></div>`).join("")}</div></div>
+
+  <div class="c"><div class="lg">♈ DREAM ZODIAC</div><div class="g4">${[["♈","Aries","#ff6b6b"],["♉","Taurus","#4ecdc4"],["♊","Gemini","#ffd700"],["♋","Cancer","#4FCBFF"],["♌","Leo","#ff9f43"],["♍","Virgo","#a8e6cf"],["♎","Libra","#4FCBFF"],["♏","Scorpio","#c44569"],["♐","Sag.","#f8b739"],["♑","Cap.","#778ca3"],["♒","Aqua.","#45aaf2"],["♓","Pisces","#a55eea"]].map(z=>`<div class="pl" style="background:rgba(14,43,92,0.25);border:0.5px solid rgba(79,203,255,0.08)"><div style="font-size:18px">${z[0]}</div><div style="font-size:8px;font-weight:700;color:#5A6A7A">${z[1]}</div></div>`).join("")}</div></div>
+
+  <div class="c"><div class="lg">🌙 MOON'S JOURNEY</div><div class="g4 mg" id="mgrid">${moons.map((m,i)=>`<div class="pl" onclick="tmoon(${i})" id="m${i}"><div style="font-size:22px">${m}</div><div style="font-size:7px;font-weight:700;color:#5A6A7A">${mn[i]}</div></div>`).join("")}</div><div id="mdet"></div></div>
+
+  <div class="c"><div class="lg">📖 DREAM WISDOM</div><div style="font-size:16px;font-weight:700;font-style:italic;text-align:center;color:#EAF6FF;line-height:1.5">"Dreams are the royal road to the unconscious."</div><div style="font-size:13px;color:#4FCBFF;font-weight:700;text-align:center;margin-top:6px">— Freud</div></div>
+
+  <div class="c"><div class="lg">💜 AFFIRMATION</div><div style="font-size:16px;font-weight:700;font-style:italic;text-align:center;color:#EAF6FF;line-height:1.5">${["Your dreams are letters from your deeper self.","Every dream makes the next one clearer.","Your subconscious is wiser than you know.","Tonight's dreams are already forming.","The patterns reveal who you're becoming.","You author your dream world.","Each dream is a gift."][d]}</div></div>`;
+}
+
+function dreams(c){
+  const stages=[["🌅","Awake","Threshold","#d4a44c","Set a dream intention.","5-20 min"],["🌊","N1 — Light Drift","NREM","#4FCBFF","First dream fragments.","1-7 min"],["💫","N2 — Weaving","NREM","#1a6cd4","Spindles sort memories.","10-25 min"],["🌑","N3 — Deep","Slow-wave","#0E2B5C","Body repairs.","20-40 min"],["✨","REM — Theatre","REM","#4FCBFF","Vivid dreams unfold.","10-60 min"]];
+  c.innerHTML=`
+  <div class="cd"><div class="fx"><svg width="52" height="52" viewBox="0 0 60 60" style="transform:rotate(-90deg)"><circle cx="30" cy="30" r="24" fill="none" stroke="rgba(79,203,255,0.1)" stroke-width="5"/><circle cx="30" cy="30" r="24" fill="none" stroke="#4FCBFF" stroke-width="5" stroke-linecap="round" stroke-dasharray="35 157"/></svg><div><div style="font-size:10px;font-weight:800;color:rgba(79,203,255,0.4);letter-spacing:1px;text-transform:uppercase">Dream Score</div><div style="font-size:12px;color:#5A6A7A">5 dreams · 22 pts</div></div></div></div>
+
+  <div class="c"><div class="lg">🏆 ACHIEVEMENTS</div><div class="g3">${[["🌱","First Dream"],["🔥","3-Day"],["⚡","Vivid"],["🌙","Moon Child"],["🦋","Finder"],["👑","Master"]].map((a,i)=>`<div class="pl" style="background:rgba(14,43,92,0.25);border:0.5px solid rgba(79,203,255,0.08);opacity:${i<3?"1":"0.4"}"><div style="font-size:20px">${a[0]}</div><div style="font-size:9px;font-weight:700;color:${i<3?"#4FCBFF":"#5A6A7A"};margin-top:3px">${a[1]}</div></div>`).join("")}</div></div>
+
+  <div class="c"><div class="lg">ARCHITECTURE OF SLEEP</div><div class="g4" style="margin-bottom:12px">${[["🌊","Light","#4FCBFF"],["🌑","Deep","#0E2B5C"],["✨","REM","#4FCBFF"],["💫","Recall","#d4a44c"]].map(r=>`<div class="pl" style="background:rgba(14,43,92,0.25);border:0.5px solid rgba(79,203,255,0.08)"><div class="or" style="background:${r[2]};margin:0 auto 4px">${r[0]}</div><div style="font-size:10px;font-weight:700;color:#EAF6FF">${r[1]}</div></div>`).join("")}</div></div>
+
+  ${stages.map(s=>`<div class="stg"><div style="height:3px;background:${s[3]}"></div><div style="padding:12px 14px"><div class="fx" style="margin-bottom:6px"><div class="or" style="background:${s[3]}">${s[0]}</div><div><div style="font-size:14px;font-weight:800;color:#EAF6FF">${s[1]}</div><div style="font-size:9px;font-weight:800;color:${s[3]};text-transform:uppercase;letter-spacing:1px">${s[2]}</div></div></div><div style="font-size:11px;color:#C7D0DB;line-height:1.6">${s[4]}</div><div style="font-size:10px;color:#5A6A7A;margin-top:4px">${s[5]}</div></div></div>`).join("")}
+
+  <div class="c"><div class="lg">◌ LUCID TECHNIQUES</div>${[["🧠","MILD","Repeat: 'I will know I'm dreaming'"],["👁","WILD","Stay conscious as body falls asleep"],["⏰","WBTB","Alarm at 5hrs, stay up 20min"]].map(x=>`<div class="fx" style="padding:10px 0;border-bottom:1px solid rgba(79,203,255,0.08)"><div class="or" style="background:#4FCBFF">${x[0]}</div><div><div style="font-size:14px;font-weight:700;color:#EAF6FF">${x[1]}</div><div style="font-size:11px;color:#C7D0DB">${x[2]}</div></div></div>`).join("")}</div>
+
+  <div class="c"><div class="lg">❋ DREAM DICTIONARY</div>${[["🌙","Moon","Intuition"],["⭐","Stars","Guidance"],["🐍","Snake","Transformation"],["💧","Water","Emotions"],["🕊","Flying","Freedom"],["🏠","House","Self & psyche"]].map(x=>`<div class="fx" style="padding:8px 0;border-bottom:1px solid rgba(79,203,255,0.08)"><div class="or" style="background:rgba(14,43,92,0.25);border:1px solid rgba(79,203,255,0.08)">${x[0]}</div><div><div style="font-size:13px;font-weight:700;color:#EAF6FF">${x[1]}</div><div style="font-size:11px;color:#5A6A7A">${x[2]}</div></div></div>`).join("")}<div class="bt2" style="margin-top:10px">View all 36 symbols →</div></div>`;
+}
+
+function vault(c){
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;gap:8px;padding:12px;border-radius:14px;border:1px solid rgba(79,203,255,0.08);background:rgba(7,17,31,0.85);margin-bottom:12px"><span style="color:#5A6A7A">🔍</span><input class="inp" style="border:none;padding:0;background:transparent" placeholder="Search fragments, dreams, tags..."></div>
+  <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto">${["All","⭐ Starred","📝 Text","🌙 Dreams","🎙 Voice","📸 Image"].map((f,i)=>`<div style="padding:6px 14px;border-radius:99px;border:${i===0?"1.5px solid #4FCBFF":"1px solid rgba(79,203,255,0.08)"};color:${i===0?"#4FCBFF":"#5A6A7A"};font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer">${f}</div>`).join("")}</div>
+  <div class="lb">17 ITEMS (12 fragments + 5 dreams)</div>
+  ${[{t:"📝",l:"Text",x:"What if there was an app for random thoughts?",w:"2h",s:true,tg:["app idea"]},{t:"🌙",l:"Dream",x:"Flying over a city of glass towers, each one a different idea glowing from within",w:"Last night",s:true,tg:["lucid","architecture"]},{t:"🎙",l:"Voice",x:"Voice memo: design system color tokens need better org",w:"Yesterday",s:true,tg:["design"]},{t:"🌙",l:"Dream",x:"Underwater library — books dissolving into light, each one a memory",w:"2 nights",s:false,tg:["water","knowledge"]},{t:"📸",l:"Image",x:"Screenshot of that banking app UI pattern",w:"2d",s:false,tg:["ux"]},{t:"🔗",l:"Link",x:"Article: 'Building a Second Brain' methodology",w:"3d",s:false,tg:["research"]},{t:"💡",l:"Spark",x:"Fragments → signals → projects. That's the pipeline.",w:"4d",s:true,tg:["core concept"]},{t:"🌙",l:"Dream",x:"Standing at a crossroads, each path was a different app idea",w:"5 nights",s:false,tg:["decision","paths"]}].map(f=>`<div class="fr"><div class="fb"><div style="font-size:10px;font-weight:700;color:${f.t==="🌙"?"#a55eea":"#4FCBFF"};text-transform:uppercase;letter-spacing:1px">${f.t} ${f.l}</div><div class="fx" style="gap:8px"><span style="font-size:14px;cursor:pointer">${f.s?"⭐":"☆"}</span><span class="bs">${f.w}</span></div></div><div style="font-size:13px;color:#EAF6FF;margin-top:4px;line-height:1.5">${f.x}</div><div style="display:flex;gap:4px;margin-top:8px">${f.tg.map(x=>`<span class="bd bc">${x}</span>`).join("")}</div></div>`).join("")}`;
+}
+
+function settings(c){
+  c.innerHTML=`
+  <div class="c" style="text-align:center;padding:20px"><div class="mark" style="width:56px;height:56px;border-radius:16px;font-size:28px;margin:0 auto">D</div><div style="font-size:20px;font-weight:700;color:#EAF6FF;margin-top:10px">DriftLoom</div><div class="bs">V1.2 · Ocoee Studios</div><div class="bs" style="margin-top:2px">Ideas + dreams → direction</div></div>
+  <div class="c"><div class="lb">SUBSCRIPTION</div><div class="fb"><h3>Free Plan</h3><span class="bd bc">50 fragments left</span></div><div class="bs" style="margin-top:4px">3 projects · Basic patterns</div><div class="btn" style="margin-top:12px" onclick="pay()">Upgrade to Plus</div></div>
+  <div class="c"><div class="lb">THEME</div><div class="g3">${[["🌑","Midnight"],["🌊","Deep Ocean"],["🧊","Glacier"]].map((x,i)=>`<div class="pl" style="background:${i===0?"#0E2B5C":"rgba(14,43,92,0.25)"};border:${i===0?"2px solid #4FCBFF":"1px solid rgba(79,203,255,0.08)"}"><div style="font-size:18px">${x[0]}</div><div style="font-size:11px;font-weight:700;color:#EAF6FF">${x[1]}</div></div>`).join("")}</div></div>
+  <div class="c"><div class="lb">SECURITY</div>${[["🔒","App Lock"],["😊","Face ID / Touch ID"]].map((r,i)=>`<div class="fb" style="padding:10px 0;${i===0?"border-bottom:1px solid rgba(79,203,255,0.08)":""}"><span style="font-size:14px;color:#EAF6FF">${r[0]} ${r[1]}</span><div style="width:44px;height:24px;border-radius:12px;background:#4FCBFF;display:flex;align-items:center;justify-content:flex-end;padding:2px"><div style="width:20px;height:20px;border-radius:10px;background:white"></div></div></div>`).join("")}</div>
+  <div class="c"><div class="lb">DATA</div>${["📤 Export All","📧 Email Brief","🗑 Clear Data"].map((b,i)=>`<div class="bg" style="margin-bottom:8px;${i===2?"color:#ff6b6b":""}">${b}</div>`).join("")}</div>
+  <div class="c"><div class="lb">LEGAL</div>${["Terms of Use","Privacy Policy","Manage Subscription"].map(x=>`<div class="fb" style="padding:8px 0;border-bottom:1px solid rgba(79,203,255,0.08)"><span style="font-size:13px;color:#C7D0DB">${x}</span><span style="color:#5A6A7A">→</span></div>`).join("")}</div>
+  <div style="text-align:center;padding:16px"><div class="bs">admin@ocoeestudios.com</div><div class="bs" style="margin-top:4px">© 2026 Ocoee Studios</div></div>`;
+}
+
+window.tmoon=function(i){
+  const ds=["Blank slate for intentions.","Dream recall sharpens.","Dreams carry choices.","Peak vividness approaches.","Maximum illumination.","Integration phase.","Release old patterns.","Deep rest and surrender."];
+  const mn=["New Moon","Waxing Crescent","First Quarter","Waxing Gibbous","Full Moon","Waning Gibbous","Last Quarter","Waning Crescent"];
+  ms=ms===i?null:i;
+  document.querySelectorAll(".mg .pl").forEach((e,j)=>{e.className="pl"+(j===ms?" on":"")});
+  document.getElementById("mdet").innerHTML=ms!==null?`<div class="md"><div style="font-size:14px;font-weight:700;color:#EAF6FF">${mn[i]}</div><div style="font-size:12px;color:#C7D0DB;line-height:1.6;margin-top:4px">${ds[i]}</div></div>`:"";
+};
+
+hdr();bar();rr();
+</script>
+</body>
+</html>
