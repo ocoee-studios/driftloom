@@ -50,7 +50,7 @@ src/
 - Cloud Rooms ambient spaces
 - Sleep Sounds (8 categories)
 - Dream Constellation, Achievements, DNA
-- $4.99/mo, $29.99/yr, $49.99 lifetime
+- $3.99/mo, $29.99/yr, $39.99 lifetime
 - Apple-compliant paywall with 7-day trial
 
 ## Ocoee Studios
