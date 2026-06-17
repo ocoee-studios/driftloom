@@ -105,7 +105,7 @@ Premium (subscription) features:
 The app does not collect personal data beyond what the user voluntarily enters in their dream journal. All data is stored locally on device via AsyncStorage. AI features send dream text to Anthropic's API for processing — no data is stored on our servers.
 
 Demo account: Not required — the app works immediately upon download.
-In-app purchases: Auto-renewable subscriptions ($4.99/month, $29.99/year) with 7-day free trial.
+In-app purchases: Auto-renewable subscriptions ($3.99/month, $29.99/year) with 7-day free trial.
 
 ## Privacy Policy URL
 https://ocoeestudios.com/privacy
