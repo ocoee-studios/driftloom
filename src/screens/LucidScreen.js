@@ -2,90 +2,72 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../context/AppContext';
-import GlassCard from '../components/GlassCard';
 
 export default function LucidScreen() {
-  const { colors, checks, setChecks, lucidDone, setLucidDone } = useApp();
-
-  const realityChecks = [
-    { name: 'Look at your hands', desc: 'Do they look normal? Count your fingers.' },
-    { name: 'Read text twice', desc: 'Text changes in dreams when you look away and back.' },
-    { name: 'Push finger through palm', desc: 'In a dream, your finger may pass through.' },
-    { name: 'Check the time', desc: 'Clocks behave strangely in dreams.' },
-  ];
+  const { checks, setChecks, dreams } = useApp();
+  const lucidCount = dreams.filter(d => d.lucid).length;
+  const xp = Math.min(1000, lucidCount * 70 + (checks.filter(Boolean).length * 30));
+  const level = xp < 200 ? 1 : xp < 500 ? 2 : xp < 800 ? 3 : 4;
+  const rank = ['Beginner', 'Explorer', 'Navigator', 'Architect'][level - 1];
+  const checksCompleted = checks.filter(Boolean).length;
 
   const techniques = [
-    { name: 'MILD', icon: '🧠', full: 'Mnemonic Induction', desc: 'As you fall asleep, repeat: "Next time I dream, I will realize I\'m dreaming." Visualize yourself becoming lucid in a recent dream.' },
-    { name: 'WILD', icon: '👁', full: 'Wake Initiated', desc: 'Stay conscious as your body falls asleep. Lie still, focus on hypnagogic imagery forming behind your eyelids.' },
-    { name: 'WBTB', icon: '⏰', full: 'Wake Back To Bed', desc: 'Alarm at 5 hours. Stay awake 20 min. Sleep with lucid intent. This targets the longest REM period of the night.' },
+    { id: 'MILD', full: 'Mnemonic Induction of Lucid Dreams', icon: '🧠' },
+    { id: 'WBTB', full: 'Wake Back To Bed', icon: '⏰' },
+    { id: 'WILD', full: 'Wake Initiated Lucid Dream', icon: '👁' },
+    { id: 'SSILD', full: 'Senses Initiated Lucid Dream', icon: '🎯' },
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+    <SafeAreaView style={s.safe}>
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-        <Text style={[s.title, { color: colors.navy }]}>Lucid Dreaming</Text>
+        <Text style={s.title}>Lucid Practice</Text>
 
-        {/* Intro */}
-        <GlassCard>
-          <Text style={[s.eyebrow, { color: colors.gold }]}>WHAT IS LUCID DREAMING?</Text>
-          <Text style={[s.body, { color: colors.deep }]}>
-            A lucid dream is when you realize you're dreaming — while still inside the dream. With practice, you can take control of the narrative, fly, explore, and use your dreams as a creative playground.
-          </Text>
-          <View style={s.statRow}>
-            {[{ v: '55%', l: 'have had one' }, { v: '23%', l: 'monthly' }, { v: '11%', l: 'weekly' }].map((st, i) => (
-              <View key={i} style={[s.statCard, { backgroundColor: colors.glass2, borderColor: colors.line }]}>
-                <Text style={[s.statVal, { color: colors.lav }]}>{st.v}</Text>
-                <Text style={{ fontSize: 13, color: colors.muted }}>{st.l}</Text>
-              </View>
+        {/* Progress Card */}
+        <View style={s.progressCard}>
+          <View style={{ flex: 1 }}>
+            <Text style={s.progressLabel}>Your Progress</Text>
+            <Text style={s.progressRank}>{rank}</Text>
+            <Text style={s.progressLevel}>Level {level}</Text>
+            <View style={s.xpBar}><View style={[s.xpFill, { width: `${(xp / 1000) * 100}%` }]} /></View>
+            <Text style={s.xpText}>{xp} / 1,000 XP</Text>
+          </View>
+          <Text style={{ fontSize: 50 }}>🧠</Text>
+        </View>
+
+        {/* Today's Practice */}
+        <View style={s.card}>
+          <Text style={s.cardLabel}>Today's Practice</Text>
+          <View style={s.practiceRow}>
+            <View style={s.practiceIcon}><Text style={{ fontSize: 18 }}>👁</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.practiceTitle}>Reality Check</Text>
+              <Text style={s.practiceSub}>Perform 3 reality checks throughout the day.</Text>
+              <Text style={s.practiceCount}>{checksCompleted} / 3</Text>
+            </View>
+          </View>
+          <View style={s.checkRow}>
+            {[0, 1, 2].map(i => (
+              <TouchableOpacity key={i} onPress={() => { const n = [...checks]; n[i] = !n[i]; setChecks(n); }}
+                style={[s.checkBox, checks[i] && s.checkBoxOn]}>
+                {checks[i] && <Text style={{ color: 'white', fontWeight: '700' }}>✓</Text>}
+              </TouchableOpacity>
             ))}
           </View>
-        </GlassCard>
-
-        {/* Reality Checks */}
-        <GlassCard>
-          <Text style={[s.eyebrow, { color: colors.gold }]}>✋ REALITY CHECKS</Text>
-          <Text style={{ fontSize: 14, color: colors.muted, textAlign: 'center', marginBottom: 12 }}>Practice these during the day. The habit carries into dreams.</Text>
-          {realityChecks.map((rc, i) => (
-            <TouchableOpacity key={i} onPress={() => { const n = [...checks]; n[i] = !n[i]; setChecks(n); }}
-              style={[s.checkRow, { borderColor: colors.line }]}>
-              <View style={[s.checkBox, { borderColor: colors.lav, backgroundColor: checks[i] ? colors.lav : 'transparent' }]}>
-                {checks[i] && <Text style={{ color: 'white', fontSize: 14, fontWeight: '700' }}>✓</Text>}
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, fontWeight: '700', color: colors.navy }}>{rc.name}</Text>
-                <Text style={{ fontSize: 13, color: colors.muted }}>{rc.desc}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </GlassCard>
+        </View>
 
         {/* Techniques */}
-        <Text style={[s.sectionLabel, { color: colors.navy }]}>Techniques</Text>
+        <Text style={s.sectionLabel}>Techniques</Text>
         {techniques.map((t, i) => (
-          <GlassCard key={i}>
-            <View style={s.techHeader}>
-              <View style={[s.techIcon, { backgroundColor: colors.lav }]}>
-                <Text style={{ fontSize: 20 }}>{t.icon}</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 18, fontWeight: '700', color: colors.navy }}>{t.name}</Text>
-                <Text style={{ fontSize: 13, fontWeight: '700', color: colors.lav, textTransform: 'uppercase', letterSpacing: 1 }}>{t.full}</Text>
-              </View>
+          <TouchableOpacity key={i} style={s.techRow}>
+            <View style={s.techIcon}><Text style={{ fontSize: 18 }}>{t.icon}</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.techName}>{t.id}</Text>
+              <Text style={s.techFull}>{t.full}</Text>
             </View>
-            <Text style={{ fontSize: 14, color: colors.deep, lineHeight: 22 }}>{t.desc}</Text>
-          </GlassCard>
+            <Text style={{ color: '#35516F', fontSize: 16 }}>›</Text>
+          </TouchableOpacity>
         ))}
-
-        {/* Benefits */}
-        <GlassCard>
-          <Text style={[s.eyebrow, { color: colors.gold }]}>✨ BENEFITS</Text>
-          {['Overcome nightmares by taking control', 'Boost creativity and problem-solving', 'Practice real-world skills in your sleep', 'Deepen self-awareness and emotional insight'].map((b, i) => (
-            <View key={i} style={s.benefitRow}>
-              <Text style={{ color: colors.lav }}>✦</Text>
-              <Text style={{ fontSize: 14, color: colors.deep, flex: 1 }}>{b}</Text>
-            </View>
-          ))}
-        </GlassCard>
 
         <View style={{ height: 100 }} />
       </ScrollView>
@@ -94,17 +76,38 @@ export default function LucidScreen() {
 }
 
 const s = StyleSheet.create({
-  scroll: { padding: 16 },
-  title: { fontSize: 28, fontWeight: '700', marginBottom: 16 },
-  eyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: 1.5, textTransform: 'uppercase', textAlign: 'center', marginBottom: 10 },
-  body: { fontSize: 14, textAlign: 'center', lineHeight: 22, marginBottom: 16 },
-  statRow: { flexDirection: 'row', gap: 8 },
-  statCard: { flex: 1, alignItems: 'center', padding: 10, borderRadius: 14, borderWidth: 0.5 },
-  statVal: { fontSize: 20, fontWeight: '700' },
-  checkRow: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12, borderBottomWidth: 1 },
-  checkBox: { width: 24, height: 24, borderRadius: 6, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  sectionLabel: { fontSize: 18, fontWeight: '700', marginBottom: 12, marginTop: 8 },
-  techHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 10 },
-  techIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
-  benefitRow: { flexDirection: 'row', gap: 8, paddingVertical: 6 },
+  safe: { flex: 1, backgroundColor: '#02040A' },
+  scroll: { paddingHorizontal: 20, paddingTop: 16 },
+  title: { fontSize: 22, fontWeight: '700', color: '#EAF6FF', textAlign: 'center', marginBottom: 20 },
+  card: {
+    backgroundColor: 'rgba(14, 43, 92, 0.35)', borderWidth: 1, borderColor: 'rgba(79, 203, 255, 0.12)',
+    borderRadius: 18, padding: 18, marginBottom: 12,
+  },
+  progressCard: {
+    backgroundColor: 'rgba(14, 43, 92, 0.4)', borderWidth: 1, borderColor: 'rgba(79, 203, 255, 0.15)',
+    borderRadius: 20, padding: 20, marginBottom: 16, flexDirection: 'row', alignItems: 'center',
+  },
+  progressLabel: { fontSize: 12, color: '#5A6A7A', fontWeight: '600' },
+  progressRank: { fontSize: 24, fontWeight: '800', color: '#EAF6FF', marginTop: 4 },
+  progressLevel: { fontSize: 14, color: '#8EAAC5', marginTop: 2 },
+  xpBar: { height: 6, borderRadius: 3, backgroundColor: 'rgba(79, 203, 255, 0.15)', marginTop: 10, width: '80%' },
+  xpFill: { height: '100%', borderRadius: 3, backgroundColor: '#4FCBFF' },
+  xpText: { fontSize: 11, color: '#5A6A7A', marginTop: 6 },
+  cardLabel: { fontSize: 12, fontWeight: '600', color: '#5A6A7A', marginBottom: 12 },
+  practiceRow: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  practiceIcon: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(79, 203, 255, 0.1)', alignItems: 'center', justifyContent: 'center' },
+  practiceTitle: { fontSize: 16, fontWeight: '700', color: '#EAF6FF' },
+  practiceSub: { fontSize: 12, color: '#8EAAC5', marginTop: 2, lineHeight: 18 },
+  practiceCount: { fontSize: 13, fontWeight: '700', color: '#4FCBFF', marginTop: 6 },
+  checkRow: { flexDirection: 'row', gap: 10, marginTop: 14 },
+  checkBox: { width: 32, height: 32, borderRadius: 8, borderWidth: 2, borderColor: '#4FCBFF', alignItems: 'center', justifyContent: 'center' },
+  checkBoxOn: { backgroundColor: '#4FCBFF' },
+  sectionLabel: { fontSize: 14, fontWeight: '600', color: '#8EAAC5', marginBottom: 12, marginTop: 8 },
+  techRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16,
+    borderBottomWidth: 1, borderBottomColor: 'rgba(79, 203, 255, 0.06)',
+  },
+  techIcon: { width: 40, height: 40, borderRadius: 12, backgroundColor: 'rgba(79, 203, 255, 0.1)', alignItems: 'center', justifyContent: 'center' },
+  techName: { fontSize: 16, fontWeight: '700', color: '#EAF6FF' },
+  techFull: { fontSize: 12, color: '#5A6A7A', marginTop: 2 },
 });
