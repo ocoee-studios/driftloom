@@ -91,7 +91,7 @@ const themeVars = {
     "--glass2":"rgba(18,26,72,0.42)","--line":"rgba(255,255,255,0.12)",
     "--text":"#e8e4ff","--muted":"#8b95c8","--card-shadow":"rgba(0,0,0,0.3)",
     "--lav":"#a07cf0","--blue":"#5a9de6","--gold":"#d4a44c","--ice":"#1a2460",
-    "--nav-bg":"rgba(2,4,10,0.9)","--nav-active":"rgba(30,40,90,0.9)",
+    "--nav-bg":"rgba(12,18,52,0.82)","--nav-active":"rgba(30,40,90,0.9)",
     "--input-bg":"rgba(255,255,255,0.08)","--star-opacity":"0.7",
   },
   lavender: {
@@ -3525,7 +3525,7 @@ export default function DriftLoom() {
                 </div>
 
                 {/* ☁️ Cloud Rooms — from DriftLoom */}
-                <div style={{padding:18,borderRadius:20,background:"linear-gradient(135deg,#02040A,#07111F)",border:"0.5px solid rgba(79,203,255,0.1)",marginBottom:14,overflow:"hidden",position:"relative"}}>
+                <div style={{padding:18,borderRadius:20,background:"linear-gradient(135deg,#02040A,#12122a)",border:"0.5px solid rgba(79,203,255,0.1)",marginBottom:14,overflow:"hidden",position:"relative"}}>
                   <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%,rgba(106,138,255,0.06),transparent 60%)"}} />
                   <div style={{position:"relative",zIndex:1}}>
                     <div style={{fontSize:13,fontWeight:800,color:"rgba(224,216,240,0.4)",letterSpacing:1.5,textTransform:"uppercase",textAlign:"center",marginBottom:10}}>☁️ Cloud Room</div>
