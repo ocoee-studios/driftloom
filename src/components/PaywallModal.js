@@ -27,9 +27,9 @@ export default function PaywallModal() {
         <TouchableOpacity style={s.plan} onPress={buy}>
           <View style={s.planRow}>
             <Text style={s.planSmLabel}>Monthly</Text>
-            <Text style={s.planSmPrice}>$4.99<Text style={s.planPer}>/mo</Text></Text>
+            <Text style={s.planSmPrice}>$3.99<Text style={s.planPer}>/mo</Text></Text>
           </View>
-          <Text style={s.planNote}>7-day free trial, then $4.99/month. Auto-renews.</Text>
+          <Text style={s.planNote}>7-day free trial, then $3.99/month. Auto-renews.</Text>
         </TouchableOpacity>
 
         {/* Lifetime */}
@@ -37,7 +37,7 @@ export default function PaywallModal() {
           <View style={s.badgeLife}><Text style={s.badgeText}>FOREVER</Text></View>
           <View style={s.planRow}>
             <Text style={s.planSmLabel}>Lifetime — Pay once</Text>
-            <Text style={s.planSmPrice}>$49.99</Text>
+            <Text style={s.planSmPrice}>$39.99</Text>
           </View>
           <Text style={s.planNote}>One-time purchase. All features, forever. No subscription.</Text>
         </TouchableOpacity>
