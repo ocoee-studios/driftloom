@@ -1,117 +1,88 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../context/AppContext';
-import GlassCard from '../components/GlassCard';
-import { SLEEP_STAGES } from '../constants/data';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CyclesScreen() {
-  const { colors, checkin } = useApp();
-  const [selectedCycle, setSelectedCycle] = useState(null);
-
-  const cycleRings = [
-    { label: 'Light', icon: '🌊', color: '#6a8cff' },
-    { label: 'Deep', icon: '🌑', color: '#0E2B5C' },
-    { label: 'REM', icon: '✨', color: '#4FCBFF' },
-    { label: 'Recall', icon: '💫', color: '#d4a44c' },
-  ];
+  const { moonPhase } = useApp();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+    <SafeAreaView style={s.safe}>
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-        <Text style={[s.title, { color: colors.navy }]}>Dream Cycles</Text>
+        <Text style={s.title}>Cycles</Text>
 
-        {/* Intro */}
-        <GlassCard>
-          <Text style={[s.eyebrow, { color: colors.gold }]}>YOUR NIGHTLY JOURNEY</Text>
-          <Text style={[s.heading, { color: colors.navy }]}>The Architecture of Sleep</Text>
-          <Text style={[s.body, { color: colors.deep }]}>
-            Each 90-minute cycle brings more REM. Dream-rich periods grow longer toward morning.
-          </Text>
-
-          {/* Cycle Rings */}
-          <View style={s.ringGrid}>
-            {cycleRings.map((item, i) => (
-              <TouchableOpacity key={i} onPress={() => setSelectedCycle(selectedCycle === i ? null : i)}
-                style={[s.ringCard, {
-                  backgroundColor: selectedCycle === i ? item.color + '15' : colors.glass2,
-                  borderColor: selectedCycle === i ? item.color : colors.line,
-                  borderWidth: selectedCycle === i ? 2 : 0.5,
-                }]}>
-                <View style={[s.ringOrb, { backgroundColor: item.color }]}>
-                  <Text style={{ fontSize: 20 }}>{item.icon}</Text>
-                </View>
-                <Text style={[s.ringLabel, { color: selectedCycle === i ? item.color : colors.navy }]}>{item.label}</Text>
-              </TouchableOpacity>
-            ))}
+        {/* Moon Phase */}
+        <View style={s.card}>
+          <View style={s.moonRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={s.cardLabel}>Moon Phase</Text>
+              <Text style={s.moonName}>{moonPhase?.name || 'Waxing Gibbous'}</Text>
+              <Text style={s.moonIllum}>Illumination: {moonPhase?.illumination || 72}%</Text>
+            </View>
+            <Text style={{ fontSize: 50 }}>🌔</Text>
           </View>
-        </GlassCard>
+        </View>
 
-        {/* Sleep Tonight */}
-        <GlassCard dark>
-          <Text style={[s.eyebrow, { color: 'rgba(79,203,255,0.5)' }]}>🌙 YOUR SLEEP TONIGHT</Text>
-          <Text style={s.tonightGrade}>
-            {checkin.sleep >= 7 ? 'Excellent' : checkin.sleep >= 5 ? 'Good' : checkin.sleep >= 3 ? 'Fair' : 'Needs Care'}
-          </Text>
-          <Text style={{ fontSize: 13, color: 'rgba(224,216,240,0.4)', textAlign: 'center' }}>Based on your check-in data</Text>
-          <View style={[s.statGrid, { marginTop: 10 }]}>
-            {[
-              { label: 'Sleep', val: `${checkin.sleep || 5}/10`, icon: '😴', color: checkin.sleep >= 7 ? '#4ecdc4' : '#ffb347' },
-              { label: 'Stress', val: `${checkin.stress || 5}/10`, icon: '😰', color: checkin.stress <= 3 ? '#4ecdc4' : '#ff6b6b' },
-              { label: 'Energy', val: `${checkin.energy || 5}/10`, icon: '⚡', color: checkin.energy >= 7 ? '#4ecdc4' : '#ffb347' },
-            ].map((s2, i) => (
-              <View key={i} style={s.tonightStat}>
-                <Text style={{ fontSize: 14 }}>{s2.icon}</Text>
-                <Text style={{ fontSize: 18, fontWeight: '700', color: s2.color }}>{s2.val}</Text>
-                <Text style={{ fontSize: 10, color: 'rgba(224,216,240,0.3)' }}>{s2.label}</Text>
-              </View>
-            ))}
+        {/* Tonight's Sleep Outlook */}
+        <View style={s.card}>
+          <View style={s.moonRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={s.cardLabel}>Tonight's Sleep Outlook</Text>
+              <Text style={s.outlookGrade}>Good</Text>
+              <Text style={s.outlookSub}>Great conditions for deep rest and dream recall.</Text>
+            </View>
+            <Text style={{ fontSize: 36 }}>🌙</Text>
           </View>
-        </GlassCard>
+        </View>
+
+        {/* Sleep Window */}
+        <View style={s.card}>
+          <View style={s.moonRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={s.cardLabel}>Sleep Window</Text>
+              <Text style={s.windowTime}>10:45 PM – 7:15 AM</Text>
+              <Text style={s.windowSub}>Aim for 8h 30m</Text>
+            </View>
+            <Text style={{ fontSize: 32 }}>🛏</Text>
+          </View>
+        </View>
 
         {/* Sleep Stages */}
-        <Text style={[s.sectionLabel, { color: colors.navy }]}>The Stages</Text>
-        {SLEEP_STAGES.map((stage, i) => (
-          <View key={i} style={[s.stageCard, { backgroundColor: colors.glass, borderColor: colors.line }]}>
-            <View style={{ height: 3, backgroundColor: stage.color, borderTopLeftRadius: 20, borderTopRightRadius: 20 }} />
-            <View style={s.stageContent}>
-              <View style={s.stageHeader}>
-                <View style={[s.stageOrb, { backgroundColor: stage.color }]}>
-                  <Text style={{ fontSize: 20 }}>{stage.icon}</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={[s.stageName, { color: colors.navy }]}>{stage.name}</Text>
-                  <Text style={{ fontSize: 13, fontWeight: '800', color: stage.color, textTransform: 'uppercase', letterSpacing: 1 }}>{stage.sub}</Text>
-                </View>
-              </View>
-              <Text style={{ fontSize: 14, color: colors.deep, lineHeight: 22, marginBottom: 12 }}>{stage.body}</Text>
-              <View style={s.tagRow}>
-                {stage.tags.map((t, j) => (
-                  <View key={j} style={[s.tag, { backgroundColor: colors.glass2, borderColor: colors.line }]}>
-                    <Text style={{ fontSize: 13, fontWeight: '700', color: colors.deep }}>{t}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
+        <View style={s.card}>
+          <Text style={s.cardLabel}>Sleep Stages <Text style={s.cardLabelLight}>(Typical)</Text></Text>
+          <View style={s.stageBar}>
+            <View style={[s.stageSeg, { flex: 1.75, backgroundColor: '#0E2B5C' }]} />
+            <View style={[s.stageSeg, { flex: 2.1, backgroundColor: '#4FCBFF' }]} />
+            <View style={[s.stageSeg, { flex: 4.3, backgroundColor: '#8EAAC5' }]} />
+            <View style={[s.stageSeg, { flex: 0.33, backgroundColor: '#35516F' }]} />
           </View>
-        ))}
+          <View style={s.stageLabels}>
+            {[
+              { color: '#0E2B5C', label: 'Deep', time: '1h 45m' },
+              { color: '#4FCBFF', label: 'REM', time: '2h 10m' },
+              { color: '#8EAAC5', label: 'Light', time: '4h 20m' },
+              { color: '#35516F', label: 'Awake', time: '0h 20m' },
+            ].map((st, i) => (
+              <View key={i} style={s.stageLabelItem}>
+                <View style={[s.stageDot, { backgroundColor: st.color }]} />
+                <Text style={s.stageText}>{st.label}</Text>
+                <Text style={s.stageTime}>{st.time}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
 
-        {/* Did You Know */}
-        <GlassCard>
-          <Text style={[s.eyebrow, { color: colors.gold }]}>💤 DID YOU KNOW?</Text>
-          {[
-            { icon: '🧠', fact: 'Your brain uses MORE energy during REM than when awake.' },
-            { icon: '🌡', fact: '65°F room temp increases deep sleep by 25%.' },
-            { icon: '📱', fact: 'Blue light suppresses melatonin for 90 minutes.' },
-            { icon: '⏰', fact: 'Same bedtime every night, even weekends, improves sleep quality.' },
-          ].map((f, i) => (
-            <View key={i} style={[s.factRow, { borderBottomColor: i < 3 ? colors.line : 'transparent' }]}>
-              <Text style={{ fontSize: 16, marginRight: 10 }}>{f.icon}</Text>
-              <Text style={{ fontSize: 14, color: colors.deep, lineHeight: 22, flex: 1 }}>{f.fact}</Text>
+        {/* Smart Wake */}
+        <View style={s.card}>
+          <View style={s.moonRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={s.cardLabel}>Smart Wake Window</Text>
+              <Text style={s.windowTime}>6:45 AM – 7:15 AM</Text>
+              <Text style={s.windowSub}>Wake in a light sleep phase.</Text>
             </View>
-          ))}
-        </GlassCard>
+            <Text style={{ fontSize: 32 }}>⏰</Text>
+          </View>
+        </View>
 
         <View style={{ height: 100 }} />
       </ScrollView>
@@ -120,25 +91,27 @@ export default function CyclesScreen() {
 }
 
 const s = StyleSheet.create({
-  scroll: { padding: 16 },
-  title: { fontSize: 28, fontWeight: '700', marginBottom: 16 },
-  eyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: 1.5, textTransform: 'uppercase', textAlign: 'center', marginBottom: 8 },
-  heading: { fontSize: 24, fontWeight: '700', textAlign: 'center', marginBottom: 8 },
-  body: { fontSize: 14, textAlign: 'center', lineHeight: 22 },
-  ringGrid: { flexDirection: 'row', gap: 8, marginTop: 12 },
-  ringCard: { flex: 1, alignItems: 'center', padding: 14, borderRadius: 18 },
-  ringOrb: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
-  ringLabel: { fontSize: 13, fontWeight: '700' },
-  sectionLabel: { fontSize: 18, fontWeight: '700', marginBottom: 12, marginTop: 8 },
-  stageCard: { borderRadius: 20, marginBottom: 14, borderWidth: 0.5, overflow: 'hidden' },
-  stageContent: { padding: 20 },
-  stageHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
-  stageOrb: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
-  stageName: { fontSize: 20, fontWeight: '800' },
-  tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  tag: { paddingHorizontal: 12, paddingVertical: 4, borderRadius: 99, borderWidth: 0.5 },
-  tonightGrade: { fontSize: 36, fontWeight: '700', color: '#EAF6FF', textAlign: 'center' },
-  statGrid: { flexDirection: 'row', gap: 8 },
-  tonightStat: { flex: 1, alignItems: 'center', padding: 8, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.04)', borderWidth: 0.5, borderColor: 'rgba(255,255,255,0.06)' },
-  factRow: { flexDirection: 'row', paddingVertical: 8, borderBottomWidth: 1 },
+  safe: { flex: 1, backgroundColor: '#02040A' },
+  scroll: { paddingHorizontal: 20, paddingTop: 16 },
+  title: { fontSize: 22, fontWeight: '700', color: '#EAF6FF', textAlign: 'center', marginBottom: 20 },
+  card: {
+    backgroundColor: 'rgba(14, 43, 92, 0.35)', borderWidth: 1, borderColor: 'rgba(79, 203, 255, 0.12)',
+    borderRadius: 18, padding: 18, marginBottom: 12,
+  },
+  cardLabel: { fontSize: 12, fontWeight: '600', color: '#5A6A7A', marginBottom: 4 },
+  cardLabelLight: { fontWeight: '400' },
+  moonRow: { flexDirection: 'row', alignItems: 'center' },
+  moonName: { fontSize: 20, fontWeight: '800', color: '#EAF6FF' },
+  moonIllum: { fontSize: 13, color: '#5A6A7A', marginTop: 2 },
+  outlookGrade: { fontSize: 20, fontWeight: '800', color: '#EAF6FF' },
+  outlookSub: { fontSize: 13, color: '#8EAAC5', marginTop: 2, lineHeight: 20 },
+  windowTime: { fontSize: 22, fontWeight: '800', color: '#EAF6FF' },
+  windowSub: { fontSize: 13, color: '#5A6A7A', marginTop: 2 },
+  stageBar: { flexDirection: 'row', height: 8, borderRadius: 4, overflow: 'hidden', marginTop: 12, marginBottom: 14, gap: 2 },
+  stageSeg: { borderRadius: 4 },
+  stageLabels: { flexDirection: 'row', justifyContent: 'space-between' },
+  stageLabelItem: { alignItems: 'center' },
+  stageDot: { width: 10, height: 10, borderRadius: 5, marginBottom: 4 },
+  stageText: { fontSize: 11, fontWeight: '600', color: '#8EAAC5' },
+  stageTime: { fontSize: 12, fontWeight: '700', color: '#EAF6FF', marginTop: 2 },
 });
