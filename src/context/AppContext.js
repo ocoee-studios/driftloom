@@ -12,6 +12,7 @@ export function AppProvider({ children }) {
   
   // Core state
   const [dreams, setDreams] = useState([]);
+  const [fragments, setFragments] = useState([]);
   const [theme, setTheme] = useState(0);
   const [inkColor, setInkColor] = useState("#EAF6FF");
   const [journalFont, setJournalFont] = useState("System");
@@ -140,7 +141,7 @@ export function AppProvider({ children }) {
   
   const value = {
     // State
-    dreams, setDreams, dream, setDream, editingIdx, setEditingIdx,
+    dreams, setDreams, fragments, setFragments, dream, setDream, editingIdx, setEditingIdx,
     checkin, setCheckin, checkinDone, setCheckinDone,
     dailyMood, setDailyMood, dailyRecall, setDailyRecall, dailySymbol, setDailySymbol,
     checks, setChecks, lucidDone, setLucidDone,
