@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DriftLoom — Idea-to-Project Incubator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',sans-serif;background:#0a0f1a;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.phone{width:375px;height:812px;border-radius:52px;border:8px solid #1a1a2e;background:#02040A;overflow:hidden;position:relative;box-shadow:0 40px 80px rgba(0,0,0,0.5),0 0 0 2px #222}
+.notch{width:140px;height:32px;background:#1a1a2e;border-radius:0 0 20px 20px;margin:0 auto;position:relative;z-index:10}
+.screen{height:calc(100% - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+.screen::-webkit-scrollbar{display:none}
+:root{--bg:#02040A;--card:#07111F;--ocean:#0E2B5C;--cyan:#4FCBFF;--silver:#C7D0DB;--ice:#EAF6FF;--muted:#5A6A7A;--line:rgba(79,203,255,0.08);--glass:rgba(7,17,31,0.85);--g2:rgba(14,43,92,0.25)}
+.hdr{padding:14px 18px 10px;display:flex;justify-content:space-between;align-items:center}
+.logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#0E2B5C,#4FCBFF);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--ice)}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-title{font-size:20px;font-weight:700;color:var(--ice);letter-spacing:-0.3px}
+.hdr-sub{font-size:11px;color:var(--muted)}
+.cnt{padding:0 16px 90px}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;backdrop-filter:blur(20px)}
+.card-dark{background:linear-gradient(135deg,var(--bg),var(--card));border:1px solid rgba(79,203,255,0.06);border-radius:16px;padding:16px;margin-bottom:12px}
+.card-accent{background:linear-gradient(135deg,rgba(14,43,92,0.4),rgba(79,203,255,0.08));border:1px solid rgba(79,203,255,0.15);border-radius:16px;padding:16px;margin-bottom:12px}
+.label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.label-cyan{font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+h2{font-size:18px;font-weight:700;color:var(--ice);margin-bottom:4px;letter-spacing:-0.3px}
+h3{font-size:15px;font-weight:700;color:var(--ice);letter-spacing:-0.2px}
+.body{font-size:13px;color:var(--silver);line-height:1.6}
+.body-sm{font-size:12px;color:var(--muted);line-height:1.5}
+.flex{display:flex;align-items:center;gap:10px}
+.flex-between{display:flex;justify-content:space-between;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.btn{padding:14px;border-radius:14px;background:var(--cyan);text-align:center;cursor:pointer;margin-bottom:10px;font-weight:700;font-size:14px;color:var(--bg);transition:transform 0.1s}
+.btn:active{transform:scale(0.97)}
+.btn-outline{padding:12px;border-radius:14px;border:1.5px solid var(--cyan);text-align:center;cursor:pointer;margin-bottom:10px;font-weight:700;font-size:13px;color:var(--cyan)}
+.btn-ghost{padding:10px;border-radius:12px;border:1px solid var(--line);text-align:center;cursor:pointer;font-size:13px;color:var(--silver)}
+.inp{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(14,43,92,0.15);color:var(--ice);font-size:14px;outline:none;box-sizing:border-box;font-family:inherit}
+.inp::placeholder{color:var(--muted)}
+textarea.inp{resize:none;min-height:80px}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:0.5px}
+.badge-cyan{background:rgba(79,203,255,0.12);color:var(--cyan);border:1px solid rgba(79,203,255,0.2)}
+.badge-gold{background:rgba(212,164,76,0.12);color:#d4a44c;border:1px solid rgba(212,164,76,0.2)}
+.badge-green{background:rgba(46,204,113,0.12);color:#2ecc71;border:1px solid rgba(46,204,113,0.2)}
+.badge-red{background:rgba(255,107,107,0.12);color:#ff6b6b;border:1px solid rgba(255,107,107,0.2)}
+.pill{padding:10px;border-radius:14px;text-align:center;cursor:pointer;transition:transform 0.1s}
+.pill:active{transform:scale(0.96)}
+.stat{text-align:center;padding:14px 8px;border-radius:14px;background:var(--g2);border:1px solid var(--line)}
+.stat .num{font-size:22px;font-weight:800;color:var(--ice);letter-spacing:-0.5px}
+.stat .lbl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.divider{border-top:1px solid var(--line);margin:12px 0}
+.orb{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.fragment{padding:14px;border-radius:14px;background:var(--g2);border:1px solid var(--line);margin-bottom:8px;cursor:pointer}
+.fragment:active{border-color:rgba(79,203,255,0.2)}
+.fragment .type{font-size:10px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px}
+.fragment .text{font-size:13px;color:var(--ice);margin-top:4px;line-height:1.5}
+.fragment .meta{font-size:11px;color:var(--muted);margin-top:6px}
+.tabs{position:absolute;bottom:0;left:0;right:0;height:62px;display:flex;align-items:center;justify-content:space-around;background:rgba(2,4,10,0.96);border-top:1px solid var(--line);z-index:10;padding-bottom:4px;backdrop-filter:blur(30px)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 8px;border-radius:10px;user-select:none;transition:all 0.15s}
+.tab.on{background:rgba(79,203,255,0.08)}
+.tab .icon{font-size:18px;line-height:1}
+.tab span{font-size:9px;font-weight:700;letter-spacing:0.3px}
+.modal{position:absolute;inset:0;background:rgba(2,4,10,0.96);z-index:20;overflow-y:auto;padding:24px 16px;display:none}
+.modal.show{display:block}
+.streak-bar{display:flex;gap:4px;margin-top:8px}
+.streak-dot{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.toggle{width:44px;height:24px;border-radius:12px;display:flex;align-items:center;padding:2px;cursor:pointer;transition:background 0.2s}
+.toggle.on{background:var(--cyan);justify-content:flex-end}
+.toggle.off{background:var(--muted);justify-content:flex-start}
+.toggle-dot{width:20px;height:20px;border-radius:10px;background:white}
+.signal-card{padding:16px;border-radius:16px;border:1.5px solid rgba(79,203,255,0.2);background:linear-gradient(135deg,rgba(14,43,92,0.3),rgba(79,203,255,0.05));margin-bottom:12px}
+.project-card{padding:16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);margin-bottom:10px}
+.progress-bar{height:4px;border-radius:2px;background:rgba(79,203,255,0.1);margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;background:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="notch"></div>
+<div class="screen" id="scr">
+<div class="hdr" id="header"></div>
+<div class="cnt" id="content"></div>
+<div class="tabs" id="tabBar"></div>
+<div class="modal" id="paywall"></div>
+</div>
+</div>
+<script>
+const tabs=[{i:"◉",l:"Today"},{i:"◎",l:"Capture"},{i:"◈",l:"Loom"},{i:"◆",l:"Projects"},{i:"◇",l:"Vault"},{i:"⚙",l:"Settings"}];
+let cur=0;
+const now=new Date();
+const timeStr=now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+const dateStr=now.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+
+function renderHeader(){
+  const titles=["Today's Loom","Capture","Loom","Projects","Vault","Settings"];
+  const subs=["Your creative momentum","Drop a fragment","Signals & patterns","Ideas taking shape","Your archive","Preferences"];
+  document.getElementById("header").innerHTML=`<div class="hdr-left"><div class="logo-mark">D</div><div><div class="hdr-title">${titles[cur]}</div><div class="hdr-sub">${subs[cur]}</div></div></div><div style="font-size:11px;color:var(--muted)">${timeStr}</div>`;
+}
+
+function renderTabs(){
+  document.getElementById("tabBar").innerHTML=tabs.map((t,i)=>`<div class="tab ${i===cur?"on":""}" onclick="switchTab(${i})"><div class="icon" style="color:${i===cur?"var(--cyan)":"var(--muted)"}">${t.i}</div><span style="color:${i===cur?"var(--cyan)":"var(--muted)"}">${t.l}</span></div>`).join("");
+}
+
+function switchTab(i){cur=i;renderHeader();renderTabs();render();document.getElementById("scr").scrollTop=0;}
+
+function showPay(){
+  const el=document.getElementById("paywall");el.classList.add("show");
+  el.innerHTML=`<div style="text-align:center;margin:30px 0 24px"><div class="logo-mark" style="width:48px;height:48px;border-radius:14px;font-size:24px;margin:0 auto">D</div><div style="font-size:22px;font-weight:700;color:var(--ice);margin-top:12px">Upgrade to DriftLoom Plus</div><div style="font-size:13px;color:var(--muted);margin-top:4px">Unlimited fragments, AI mentors, build plans & more</div></div>
+  <div style="padding:16px;border-radius:16px;background:rgba(79,203,255,0.06);border:1.5px solid rgba(79,203,255,0.2);margin-bottom:10px;position:relative"><div style="position:absolute;top:-8px;right:12px" class="badge badge-green">BEST VALUE</div><div class="flex-between"><span style="font-size:14px;color:var(--silver)">Annual</span><span style="font-size:20px;font-weight:700;color:var(--ice)">$29.99<span style="font-size:13px;color:var(--muted)">/yr</span></span></div><div class="body-sm" style="margin-top:4px">7-day free trial · Save 37%</div></div>
+  <div class="card" style="margin-bottom:10px"><div class="flex-between"><span style="font-size:14px;color:var(--silver)">Monthly</span><span style="font-size:20px;font-weight:700;color:var(--ice)">$3.99<span style="font-size:13px;color:var(--muted)">/mo</span></span></div></div>
+  <div class="card" style="margin-bottom:14px;position:relative"><div style="position:absolute;top:-8px;left:12px" class="badge badge-cyan">FOUNDER</div><div class="flex-between"><span style="font-size:14px;color:var(--silver)">Lifetime</span><span style="font-size:20px;font-weight:700;color:var(--ice)">$39.99</span></div><div class="body-sm" style="margin-top:4px">One-time purchase. Forever.</div></div>
+  <div class="btn" onclick="document.getElementById('paywall').classList.remove('show')">Start Free Trial</div>
+  <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:6px"><span style="text-decoration:underline;cursor:pointer">Restore Purchases</span> · <span style="text-decoration:underline;cursor:pointer">Terms</span> · <span style="text-decoration:underline;cursor:pointer">Privacy</span></div>
+  <div style="text-align:center;font-size:12px;color:var(--muted);cursor:pointer;margin-top:14px" onclick="document.getElementById('paywall').classList.remove('show')">Continue free</div>`;
+}
+
+function render(){
+  const c=document.getElementById("content");
+  if(cur===0) c.innerHTML=today();
+  else if(cur===1) c.innerHTML=capture();
+  else if(cur===2) c.innerHTML=loom();
+  else if(cur===3) c.innerHTML=projects();
+  else if(cur===4) c.innerHTML=vault();
+  else c.innerHTML=settings();
+}
+
+function today(){
+  return `
+  <div class="card-accent">
+    <div class="flex-between"><div class="label-cyan">CAPTURE STREAK</div><span class="badge badge-gold">🔥 3 days</span></div>
+    <div class="streak-bar">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map((d,i)=>`<div class="streak-dot" style="background:${i<3?"rgba(79,203,255,0.15)":"var(--g2)"};border:1px solid ${i<3?"rgba(79,203,255,0.3)":"var(--line)"}">${i<3?"🔥":""}</div>`).join("")}</div>
+    <div class="body-sm" style="margin-top:8px">3 fragments this week · Keep the momentum going</div>
+  </div>
+
+  <div class="grid3" style="margin-bottom:12px">
+    <div class="stat"><div class="num">12</div><div class="lbl">Fragments</div></div>
+    <div class="stat"><div class="num">3</div><div class="lbl">Projects</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl">Signals</div></div>
+  </div>
+
+  <div class="card">
+    <div class="label">💡 DAILY SPARK</div>
+    <h3 style="margin-bottom:6px">What problem keeps finding you?</h3>
+    <div class="body">The ideas that won't leave you alone are usually the ones worth building. Drop a fragment about it.</div>
+    <div class="btn-outline" style="margin-top:12px" onclick="switchTab(1)">Capture a thought →</div>
+  </div>
+
+  <div class="signal-card">
+    <div class="flex-between" style="margin-bottom:8px"><div class="label-cyan" style="margin:0">🔗 SIGNAL FOUND</div><span class="badge badge-cyan">New</span></div>
+    <h3>App idea keeps surfacing</h3>
+    <div class="body" style="margin-top:4px">3 fragments about the same concept: a tool for capturing stray ideas. Your subconscious is circling something.</div>
+    <div class="body-sm" style="margin-top:8px">Fragments: "voice memo app idea" · "screenshot organizer" · "thought capture tool"</div>
+    <div class="btn-outline" style="margin-top:12px" onclick="switchTab(2)">Explore this signal →</div>
+  </div>
+
+  <div class="card">
+    <div class="label">RECENT FRAGMENTS</div>
+    <div class="fragment"><div class="flex-between"><div class="type">📝 Text</div><div class="body-sm">2h ago</div></div><div class="text">What if there was an app that turns random notes into project specs?</div></div>
+    <div class="fragment"><div class="flex-between"><div class="type">🎙 Voice</div><div class="body-sm">Yesterday</div></div><div class="text">Voice memo about the design system idea — need to organize color tokens better</div></div>
+    <div class="fragment"><div class="flex-between"><div class="type">📸 Image</div><div class="body-sm">2d ago</div></div><div class="text">Screenshot of that UI pattern I keep seeing in banking apps</div></div>
+  </div>
+
+  <div class="card-dark">
+    <div class="label">📊 MOMENTUM</div>
+    <div class="flex-between" style="margin-bottom:4px"><span class="body">Capture rate</span><span style="font-size:14px;font-weight:700;color:var(--cyan)">4.2/week</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+    <div class="body-sm" style="margin-top:8px">You're in a creative upswing. Keep capturing — patterns emerge after 10+ fragments.</div>
+  </div>`;
+}
+
+function capture(){
+  return `
+  <div class="card">
+    <div class="label">WHAT TYPE?</div>
+    <div class="grid3">
+      ${[["📝","Text","var(--cyan)"],["🎙","Voice","#ff9f43"],["📸","Camera","#2ecc71"],["🔗","Link","#a55eea"],["📍","Location","#ff6b6b"],["💡","Spark","#ffd700"]].map(t=>`<div class="pill" style="background:${t[2]}10;border:1px solid ${t[2]}22"><div style="font-size:22px">${t[0]}</div><div style="font-size:11px;font-weight:700;color:${t[2]};margin-top:4px">${t[1]}</div></div>`).join("")}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">DROP YOUR FRAGMENT</div>
+    <textarea class="inp" placeholder="What's on your mind? An idea, observation, question, half-thought..."></textarea>
+  </div>
+
+  <div class="card">
+    <div class="label">TAGS (optional)</div>
+    <input class="inp" placeholder="app idea, design, ux, startup...">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+      ${["app idea","design","ux","writing","music","business","code"].map(t=>`<span class="badge badge-cyan" style="cursor:pointer">${t}</span>`).join("")}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">ATTACH TO PROJECT (optional)</div>
+    <div class="grid2">
+      ${[["◆ App Concept","3 fragments"],["◆ Design System","5 fragments"]].map(p=>`<div class="pill" style="background:var(--g2);border:1px solid var(--line);text-align:left;padding:12px"><div style="font-size:13px;font-weight:700;color:var(--ice)">${p[0]}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${p[1]}</div></div>`).join("")}
+    </div>
+  </div>
+
+  <div class="btn" style="margin-top:4px">Drop Fragment ↓</div>
+
+  <div class="card-dark" style="text-align:center">
+    <div style="font-size:32px;margin-bottom:8px">🎙</div>
+    <h3>Quick Voice Capture</h3>
+    <div class="body-sm" style="margin-top:4px">Tap and hold to record a voice fragment</div>
+    <div style="width:56px;height:56px;border-radius:28px;background:rgba(79,203,255,0.12);border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;margin:14px auto 0;cursor:pointer"><span style="font-size:20px">⏺</span></div>
+  </div>`;
+}
+
+function loom(){
+  return `
+  <div class="signal-card">
+    <div class="flex-between" style="margin-bottom:10px"><div class="label-cyan" style="margin:0">🔗 SIGNAL #1</div><span class="badge badge-cyan">Strong</span></div>
+    <h2>Creative capture tool</h2>
+    <div class="body" style="margin-top:6px">You've dropped 5 fragments about capturing and organizing ideas. This pattern has momentum — it wants to become something.</div>
+    <div class="divider"></div>
+    <div class="label" style="margin-top:0">CONNECTED FRAGMENTS</div>
+    ${["What if there was an app for random thoughts?","Voice memo: 'need a better capture flow'","Screenshot of that note-taking app UI","Link: article about second-brain apps","Spark: 'fragments → projects pipeline'"].map((f,i)=>`<div class="flex" style="padding:6px 0;${i<4?"border-bottom:1px solid var(--line)":""}"><div class="orb" style="background:var(--g2);border:1px solid var(--line);font-size:12px">${["📝","🎙","📸","🔗","💡"][i]}</div><div style="font-size:12px;color:var(--silver)">${f}</div></div>`).join("")}
+    <div class="btn" style="margin-top:14px" onclick="showPay()">🧠 Synthesize with AI Mentor</div>
+  </div>
+
+  <div class="signal-card" style="border-color:rgba(212,164,76,0.2)">
+    <div class="flex-between" style="margin-bottom:10px"><div class="label" style="margin:0;color:#d4a44c">🔗 SIGNAL #2</div><span class="badge badge-gold">Emerging</span></div>
+    <h2>Design system obsession</h2>
+    <div class="body" style="margin-top:6px">3 fragments about color tokens, typography scales, and component libraries. A system is trying to form.</div>
+    <div class="btn-outline" style="margin-top:12px">Explore →</div>
+  </div>
+
+  <div class="card">
+    <div class="label">SYNTHESIS PREVIEW</div>
+    <div class="card-dark" style="margin-bottom:0">
+      <div class="flex" style="margin-bottom:10px"><div class="orb" style="background:var(--cyan)">🧠</div><div><h3 style="margin:0">Founder Mentor</h3><div class="body-sm">Based on 5 fragments</div></div></div>
+      <div class="body">"You're describing a fragment-to-project pipeline. The core insight: ideas don't arrive as projects — they arrive as fragments. The app that helps people connect those fragments has real potential."</div>
+      <div class="divider"></div>
+      <div class="label" style="margin:0">SUGGESTED DIRECTION</div>
+      <div style="margin-top:8px">
+        ${["Build an MVP: fragment capture → pattern detection","Focus on mobile-first voice/photo capture","Monetize with a Plus tier for AI synthesis"].map((s,i)=>`<div class="flex" style="margin-bottom:6px"><span style="color:var(--cyan);font-size:12px">${i+1}.</span><span style="font-size:13px;color:var(--ice)">${s}</span></div>`).join("")}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">AI MENTORS</div>
+    <div class="grid3">
+      ${[["🧠","Founder"],["🎨","Designer"],["✍️","Writer"],["🎬","Filmmaker"],["🎮","Game Dev"],["🔬","Researcher"]].map(m=>`<div class="pill" style="background:var(--g2);border:1px solid var(--line)"><div style="font-size:20px">${m[0]}</div><div style="font-size:10px;font-weight:700;color:var(--silver);margin-top:3px">${m[1]}</div></div>`).join("")}
+    </div>
+  </div>`;
+}
+
+function projects(){
+  return `
+  <div class="btn" onclick="switchTab(2)">+ New Project from Signal</div>
+
+  <div class="project-card">
+    <div class="flex-between" style="margin-bottom:8px"><span class="badge badge-cyan">Active</span><span class="body-sm">Updated 2h ago</span></div>
+    <h2>Fragment Capture App</h2>
+    <div class="body" style="margin-top:4px">A mobile-first tool that turns stray ideas into buildable projects through pattern detection and AI synthesis.</div>
+    <div class="flex" style="margin-top:10px;flex-wrap:wrap;gap:6px">
+      <span class="badge badge-cyan">app</span><span class="badge badge-cyan">mobile</span><span class="badge badge-cyan">productivity</span>
+    </div>
+    <div class="divider"></div>
+    <div class="flex-between"><div><div class="body-sm">5 fragments · 1 synthesis</div></div><div class="body-sm" style="color:var(--cyan)">70% defined</div></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+    <div style="margin-top:12px">
+      <div class="label">BUILD PLAN</div>
+      ${["✅ Define the core capture flow","✅ Map fragment → signal detection","⬜ Design the synthesis UI","⬜ Build MVP prototype","⬜ Test with 5 users"].map(s=>`<div style="font-size:12px;color:${s.startsWith("✅")?"var(--cyan)":"var(--silver)"};padding:4px 0">${s}</div>`).join("")}
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="flex-between" style="margin-bottom:8px"><span class="badge badge-gold">Incubating</span><span class="body-sm">3 days ago</span></div>
+    <h2>Design System Kit</h2>
+    <div class="body" style="margin-top:4px">A reusable design token system with color, type, and spacing scales.</div>
+    <div class="flex" style="margin-top:10px;flex-wrap:wrap;gap:6px"><span class="badge badge-cyan">design</span><span class="badge badge-cyan">system</span></div>
+    <div class="divider"></div>
+    <div class="flex-between"><div class="body-sm">3 fragments · 0 synthesis</div><div class="body-sm" style="color:#d4a44c">40% defined</div></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:40%;background:#d4a44c"></div></div>
+  </div>
+
+  <div class="project-card" style="opacity:0.5">
+    <div class="flex-between" style="margin-bottom:8px"><span class="badge badge-red">Paused</span><span class="body-sm">2 weeks ago</span></div>
+    <h2>Podcast Concept</h2>
+    <div class="body" style="margin-top:4px">Interview series about creative process.</div>
+    <div class="divider"></div>
+    <div class="body-sm">2 fragments · Needs more signal</div>
+  </div>`;
+}
+
+function vault(){
+  return `
+  <div style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--glass);margin-bottom:12px"><span style="color:var(--muted)">🔍</span><input class="inp" style="border:none;padding:0;background:transparent" placeholder="Search fragments, projects, tags..."></div>
+
+  <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto">
+    ${["All","⭐ Starred","📝 Text","🎙 Voice","📸 Image","🔗 Link"].map((f,i)=>`<div style="padding:6px 14px;border-radius:99px;border:${i===0?"1.5px solid var(--cyan)":"1px solid var(--line)"};color:${i===0?"var(--cyan)":"var(--muted)"};font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer">${f}</div>`).join("")}
+  </div>
+
+  <div class="label">12 FRAGMENTS</div>
+
+  ${[
+    {type:"📝 Text",time:"2h ago",text:"What if there was an app for random thoughts?",star:true,tags:["app idea"]},
+    {type:"🎙 Voice",time:"Yesterday",text:"Voice memo: design system color tokens need better organization",star:true,tags:["design"]},
+    {type:"📸 Image",time:"2d ago",text:"Screenshot of that banking app UI pattern",star:false,tags:["ux","inspiration"]},
+    {type:"🔗 Link",time:"3d ago",text:"Article: 'Building a Second Brain' methodology breakdown",star:false,tags:["research"]},
+    {type:"💡 Spark",time:"4d ago",text:"Fragments → signals → projects. That's the pipeline.",star:true,tags:["app idea","core concept"]},
+    {type:"📝 Text",time:"5d ago",text:"The best ideas come when you're not trying to have ideas",star:false,tags:["writing"]},
+    {type:"📍 Location",time:"1w ago",text:"Coffee shop on 5th — great ambient noise for thinking",star:false,tags:["places"]},
+  ].map(f=>`
+    <div class="fragment">
+      <div class="flex-between"><div class="type">${f.type}</div><div class="flex" style="gap:8px"><span style="font-size:14px;cursor:pointer">${f.star?"⭐":"☆"}</span><span class="body-sm">${f.time}</span></div></div>
+      <div class="text">${f.text}</div>
+      <div style="display:flex;gap:4px;margin-top:8px">${f.tags.map(t=>`<span class="badge badge-cyan">${t}</span>`).join("")}</div>
+    </div>
+  `).join("")}`;
+}
+
+function settings(){
+  return `
+  <div class="card" style="text-align:center;padding:20px">
+    <div class="logo-mark" style="width:56px;height:56px;border-radius:16px;font-size:28px;margin:0 auto">D</div>
+    <div style="font-size:20px;font-weight:700;color:var(--ice);margin-top:10px">DriftLoom</div>
+    <div class="body-sm">V1.2 · Ocoee Studios</div>
+    <div class="body-sm" style="margin-top:4px">Turn creative drift into direction</div>
+  </div>
+
+  <div class="card">
+    <div class="label">SUBSCRIPTION</div>
+    <div class="flex-between"><h3>Free Plan</h3><span class="badge badge-cyan">50 fragments left</span></div>
+    <div class="body-sm" style="margin-top:4px">3 projects · Basic pattern detection</div>
+    <div class="btn" style="margin-top:12px" onclick="showPay()">Upgrade to Plus</div>
+  </div>
+
+  <div class="card">
+    <div class="label">PREFERENCES</div>
+    ${[["Daily spark prompts","on"],["Capture reminders","on"],["Sound effects","off"],["Haptic feedback","on"]].map(s=>`<div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--line)"><span style="font-size:14px;color:var(--ice)">${s[0]}</span><div class="toggle ${s[1]==="on"?"on":"off"}"><div class="toggle-dot"></div></div></div>`).join("")}
+  </div>
+
+  <div class="card">
+    <div class="label">DATA</div>
+    ${["📤 Export All Fragments","📧 Email Project Brief","🗑 Clear All Data"].map((b,i)=>`<div class="btn-ghost" style="margin-bottom:8px;${i===2?"color:#ff6b6b":""}">${b}</div>`).join("")}
+  </div>
+
+  <div class="card">
+    <div class="label">LEGAL</div>
+    <div class="flex-between" style="padding:8px 0;border-bottom:1px solid var(--line)"><span style="font-size:13px;color:var(--silver)">Terms of Use</span><span style="color:var(--muted)">→</span></div>
+    <div class="flex-between" style="padding:8px 0;border-bottom:1px solid var(--line)"><span style="font-size:13px;color:var(--silver)">Privacy Policy</span><span style="color:var(--muted)">→</span></div>
+    <div class="flex-between" style="padding:8px 0"><span style="font-size:13px;color:var(--silver)">Manage Subscription</span><span style="color:var(--muted)">→</span></div>
+  </div>
+
+  <div style="text-align:center;padding:20px">
+    <div class="body-sm">admin@ocoeestudios.com</div>
+    <div class="body-sm" style="margin-top:4px">© 2026 Ocoee Studios</div>
+  </div>`;
+}
+
+renderHeader();renderTabs();render();
+</script>
+</body>
+</html>
