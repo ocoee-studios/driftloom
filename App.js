@@ -345,12 +345,6 @@ function Journal({ app, setTab }) {
     <GlassCard><View style={styles.chips}>{dreamRoles.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
     <Section title="Expanded Dream Fields" />
     <GlassCard><View style={styles.grid2}>{dreamFields.map(f=><Pill key={f} text={f}/>)}</View></GlassCard>
-    <Section title="Wake Feeling" />
-    <GlassCard><View style={styles.chips}>{wakeFeelings.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
-    <Section title="Dream Role" />
-    <GlassCard><View style={styles.chips}>{dreamRoles.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
-    <Section title="Expanded Dream Fields" />
-    <GlassCard><View style={styles.grid2}>{dreamFields.map(f=><Pill key={f} text={f}/>)}</View></GlassCard>
     <Section title="Dream Genre" />
     <GlassCard><View style={styles.chips}>{["🎬 Thriller","💕 Romance","🚀 Sci-Fi","🧙 Fantasy","😂 Comedy","👻 Horror","🔍 Mystery","⚔️ Adventure","🎭 Drama","🌀 Surreal"].map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
     <Section title="Emotional Intensity" />
