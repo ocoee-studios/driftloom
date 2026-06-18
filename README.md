@@ -1,57 +1,21 @@
-# 🌙 DriftLoom — Dream Journal AI
+# DriftLoom — AuraLunis Features + Balanced Logo
 
-> The AI-powered dream journal that decodes your subconscious.
+This build keeps the full AuraLunis feature depth while restoring the DriftLoom logo in the right places.
 
-## Tech Stack
-- **React Native** (Expo)
-- **Navigation**: @react-navigation/bottom-tabs (7 tabs)
-- **Storage**: @react-native-async-storage/async-storage
-- **Auth**: expo-local-authentication (Face ID / Touch ID)
-- **AI**: Anthropic Claude API
+## Logo usage
+- Home: large hero/signature D logo plus DRIFTLOOM wordmark.
+- Settings: small profile/about logo.
+- App assets: icon/splash/brand files.
+- Other screens: no repeated logo; they use their page graphics instead.
 
-## Quick Start
+## Tabs
+Home, Journal, Insights, Cycles, Lucid, Dictionary, Settings.
+
+## Included feature depth
+Daily Check-in, Feeling Picker, Symbol of the Day, Dream Fact, Dream Weather, Sleep Sounds, Cloud Rooms, Affirmations, Quick Capture, Deep Journal, Dream World fields, Characters & Events, Body & Powers, Context fields, Lucid details, Dream DNA, Pattern Detector, Analysis Lenses, Mood Map, Recurring Symbols, Creative Seeds, REM estimator, Smart Wake, Lunar Guide, Lucid techniques, Personal Symbol History, User Meanings, Themes, Ink Colors, Journal Fonts, Privacy/Security, Paywall/native IAP language, Export/Delete and Privacy Nutrition tools.
+
+## Run
 ```bash
 npm install
 npx expo start
 ```
-
-## Project Structure
-```
-App.js                          # Navigation + providers
-src/
-  context/AppContext.js          # All shared state
-  screens/
-    HomeScreen.js               # Dream score, check-in, cloud rooms, sounds
-    JournalScreen.js            # Dream form, moods, AI reading
-    InsightsScreen.js            # Analytics, patterns, zodiac, moon
-    CyclesScreen.js              # Sleep stages, science
-    LucidScreen.js               # Lucid techniques, reality checks
-    DictionaryScreen.js          # 36 symbols with meanings
-    SettingsScreen.js            # Themes, colors, security
-  components/
-    GlassCard.js                 # Reusable glass card
-    LockScreen.js                # Passcode + Face ID
-    PaywallModal.js              # 3-tier pricing
-  hooks/
-    useStorage.js                # AsyncStorage wrapper
-    useMoonPhase.js              # Moon phase calculator
-  constants/
-    data.js                      # Dictionary, moods, symbols, etc.
-    themes.js                    # 3 themes, ink colors, fonts
-```
-
-## Features (100+)
-- 7 tabs, 36 dictionary entries, 18 moods
-- AI dream interpretation + pattern analysis
-- Face ID / Touch ID app lock
-- 3 themes (Celestial, Midnight, Rose)
-- 12 ink colors, 6 fonts, 5 backgrounds
-- Moon phase tracking with dream guidance
-- Cloud Rooms ambient spaces
-- Sleep Sounds (8 categories)
-- Dream Constellation, Achievements, DNA
-- $3.99/mo, $29.99/yr, $39.99 lifetime
-- Apple-compliant paywall with 7-day trial
-
-## Ocoee Studios
-Version 4.0 · 2026
