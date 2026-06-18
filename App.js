@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = 'driftloom:everytab-working:v1';
@@ -232,6 +232,30 @@ function GraphicCard({ image, title, sub, children, imageStyle }) {
 function Notice({ text }) { return text ? <GlassCard success><Text style={styles.h3}>✓ {text}</Text></GlassCard> : null; }
 function FeatureGrid() { return <View style={styles.grid2}>{driftloomFeatures.map((f, i) => <Pill key={f} text={f} active={i % 8 === 0} />)}</View>; }
 
+
+const STAR_COUNT = 50;
+function StarDust({ theme }) {
+  const stars = useMemo(() => Array.from({ length: STAR_COUNT }).map((_, i) => ({
+    left: Math.random() * 100 + '%',
+    top: Math.random() * 100 + '%',
+    size: Math.random() * 2.5 + 0.5,
+    opacity: new Animated.Value(Math.random() * 0.3 + 0.1),
+    dur: Math.random() * 3000 + 2000,
+    isBlue: Math.random() > 0.6,
+  })), []);
+  useEffect(() => {
+    stars.forEach(s => {
+      const loop = () => Animated.sequence([
+        Animated.timing(s.opacity, { toValue: Math.random() * 0.7 + 0.3, duration: s.dur, useNativeDriver: true }),
+        Animated.timing(s.opacity, { toValue: Math.random() * 0.2 + 0.05, duration: s.dur, useNativeDriver: true }),
+      ]).start(loop);
+      loop();
+    });
+  }, []);
+  const light = theme === 'Glacier';
+  return <View style={StyleSheet.absoluteFill} pointerEvents="none">{stars.map((s, i) => <Animated.View key={i} style={{ position: 'absolute', left: s.left, top: s.top, width: s.size, height: s.size, borderRadius: s.size, backgroundColor: light ? (s.isBlue ? '#0A84FF' : '#0E2B5C') : (s.isBlue ? '#4FCBFF' : '#fff'), opacity: s.opacity }} />)}</View>;
+}
+
 function Home({ app, setTab }) {
   const [seed, setSeed] = useState('');
   const [sound, setSound] = useState('Rain glass');
@@ -264,7 +288,7 @@ function Home({ app, setTab }) {
     <Section title="Dream Challenges" right="PLUS" />
     <GlassCard>{streakChallenges.map((c,i)=><Row key={c.title} icon={c.icon} title={c.title} sub={c.desc} right={c.reward} last={i===streakChallenges.length-1} />)}</GlassCard>
     <Section title="Dream Oracle" />
-    <GlassCard><View style={{alignItems:'center',padding:12}}><View style={{width:70,height:70,borderRadius:35,backgroundColor:'rgba(79,203,255,0.12)',alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'rgba(79,203,255,0.2)'}}><Text style={{fontSize:32}}>🔮</Text></View><Text style={styles.h2}>Tap the orb and ask</Text><Text style={styles.body}>Ask a question about your dream life</Text><TextInput placeholder="What does my recurring dream mean?" placeholderTextColor={C.muted} style={styles.input}/><Primary compact onPress={()=>{}}>Ask the Oracle</Primary></View></GlassCard>
+    <GlassCard><View style={{alignItems:'center',padding:12}}><View style={{width:70,height:70,borderRadius:35,backgroundColor:'rgba(79,203,255,0.12)',alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'rgba(79,203,255,0.2)'}}><Text style={{fontSize:32}}>🔮</Text></View><Text style={styles.h2}>Tap the orb and ask</Text><Text style={styles.body}>Ask a question about your dream life</Text><TextInput placeholder="What does my recurring dream mean?" placeholderTextColor={C.muted} style={styles.input}/><Primary compact onPress={()=>{const r=ORACLE_RESPONSES[Math.floor(Math.random()*ORACLE_RESPONSES.length)];alert(r);}}>Ask the Oracle</Primary></View></GlassCard>
     <Section title="Dream Weather" />
     <GlassCard><Row icon="📅" title="Sunday" sub="Reflective — your mind processes the week." /><Row icon="📅" title="Monday" sub="Residual weekend energy. Good night for vivid imagery." /><Row icon="📅" title="Tuesday" sub="Peak creativity night. Set a bold dream intention." /><Row icon="📅" title="Wednesday" sub="Process stress and decisions. May dream about work." /><Row icon="📅" title="Thursday" sub="Preview the weekend. Subconscious is already planning." /><Row icon="📅" title="Friday" sub="Most vivid of the week. Relaxed mind generates rich stories." /><Row icon="📅" title="Saturday" sub="No alarms, longer REM cycles. Your best recall day." last /></GlassCard>
     <Section title="Cloud Rooms" />
@@ -437,7 +461,16 @@ function Cycles({ app }) {
     <GlassCard><Row icon="☁️" title="Tonight's Sleep Outlook" sub="Great conditions for deep rest and dream recall." right="Good" last /></GlassCard>
     <GlassCard><Input label="Sleep Window" value={bed} onChangeText={setBed} placeholder="10:45 PM" /><Input label="Wake Time" value={wake} onChangeText={setWake} placeholder="7:15 AM" /><Text style={styles.h2}>{bed} – {wake}</Text><Text style={styles.body}>Aim for 8h 30m. Best recall window: 6:45 AM – 7:15 AM.</Text></GlassCard>
     <Section title="The Architecture of Sleep" />
-    <GlassCard><SleepBar /><View style={styles.legend}>{stages.map(s => <Pill key={s.name} text={`${s.name} ${s.time}`} active={selectedStage === s.name} onPress={() => setSelectedStage(s.name)} />)}</View><Text style={[styles.h3, { marginTop: 12 }]}>{stage.name}</Text><Text style={styles.body}>{stage.body}</Text></GlassCard>
+    <GlassCard>
+      <Text style={styles.body}>Each night, your mind moves through a graceful rhythm of stages.</Text>
+      {[{icon:"🌅",name:"Awake & Winding Down",sub:"The threshold",desc:"Melatonin rises, thoughts loosen. Set a dream intention here.",tags:["5–20 min","Alpha → Theta"],color:"#d4a44c"},
+        {icon:"🌊",name:"N1 — Light Drift",sub:"Stage one · NREM",desc:"You hover between awareness and sleep. Brief surreal flashes — your first dream fragments.",tags:["1–7 min","Theta waves","~5%"],color:"#6a8cff"},
+        {icon:"💫",name:"N2 — The Weaving",sub:"Stage two · NREM",desc:"Sleep spindles sort memories and lock in learning. The outside world fades.",tags:["10–25 min","Sleep spindles","~45%"],color:"#3a8cdd"},
+        {icon:"🌑",name:"N3 — Deep Restoration",sub:"Stage three · Slow-wave",desc:"Slow delta waves roll through. Your body repairs tissue, strengthens immunity.",tags:["20–40 min","Delta waves","~25%"],color:"#0E2B5C"},
+        {icon:"✨",name:"REM — The Dream Theatre",sub:"Rapid eye movement",desc:"Your most vivid dreams unfold here. Brain lights up like when awake. By morning, REM stretches past 45 min.",tags:["10–60 min","Beta-like","~25%"],color:"#4FCBFF"},
+        {icon:"☀️",name:"Morning Recall Window",sub:"The golden moment",desc:"Stay still, replay the dream, then write immediately. You lose 90% within 10 minutes.",tags:["First 5 min","Stay still","Write now"],color:"#d4a44c"}
+      ].map((s,idx)=><View key={s.name} style={{marginTop:idx?12:8,paddingLeft:12,borderLeftWidth:3,borderLeftColor:s.color}}><View style={{flexDirection:'row',alignItems:'center',gap:8}}><Text style={{fontSize:18}}>{s.icon}</Text><View><Text style={styles.h3}>{s.name}</Text><Text style={[styles.small,{color:s.color}]}>{s.sub}</Text></View></View><Text style={[styles.body,{marginTop:4}]}>{s.desc}</Text><View style={[styles.chips,{marginTop:6}]}>{s.tags.map(t=><Pill key={t} text={t}/>)}</View></View>)}
+    </GlassCard>
     <Section title="REM Estimator" />
     <GlassCard><Row icon="1" title="First REM" sub="Around 12:15 AM" right="short" /><Row icon="2" title="Middle REM" sub="Around 3:20 AM" right="building" /><Row icon="3" title="Morning REM" sub="Around 6:40 AM" right="long" last /></GlassCard>
     <Section title="Lunar Phase Guide" />
@@ -494,6 +527,7 @@ function Lucid({ app }) {
 
 function Dictionary({ app }) {
   const [search, setSearch] = useState('');
+  const [expandedSym, setExpandedSym] = useState('');
   const [cat, setCat] = useState('All');
   const [selected, setSelected] = useState('Water');
   const [meaning, setMeaning] = useState('');
@@ -507,7 +541,7 @@ function Dictionary({ app }) {
     <Section title="Featured Symbol" />
     <GraphicCard image={water} title={symbol.term} sub={symbol.meaning} imageStyle={{ height: 118 }}><View style={styles.stats}><Stat label="Seen" value={symbol.seen} /><Stat label="Category" value={symbol.cat} /><Stat label="Mood" value="Calm" /></View><Text style={styles.body}>Personal meaning: {app.personalMeanings[symbol.term] || symbol.personal}</Text></GraphicCard>
     <Section title="Expanded Symbol Library" right={`${list.length} shown`} />
-    <GlassCard>{list.map((s, i) => <Row key={s.term} icon={s.icon} title={s.term} sub={s.meaning} right={`${s.seen} times`} onPress={() => setSelected(s.term)} last={i === list.length - 1} />)}</GlassCard>
+    <GlassCard>{list.map((s, i) => <View key={s.term}><TouchableOpacity onPress={() => setExpandedSym(expandedSym === s.term ? '' : s.term)}><Row icon={s.icon} title={s.term} sub={s.meaning} right={`${s.seen} times`} last={i === list.length - 1 && expandedSym !== s.term} /></TouchableOpacity>{expandedSym === s.term ? <View style={{paddingHorizontal:12,paddingBottom:12,borderBottomWidth:1,borderBottomColor:'rgba(79,203,255,.06)'}}><Text style={[styles.body,{lineHeight:20}]}>{s.interp || s.meaning}</Text></View> : null}</View>)}</GlassCard>
     <Section title="Personal Symbol History" />
     <GlassCard><Text style={styles.body}>Add your own meaning for {symbol.term}. This keeps DriftLoom personal instead of generic.</Text><TextInput value={meaning} onChangeText={setMeaning} placeholder="For me, this symbol means..." placeholderTextColor={C.muted} style={styles.input} /><Primary compact onPress={saveMeaning}>Save Personal Meaning</Primary></GlassCard>
     <Section title="Seen in My Dreams" />
@@ -519,6 +553,10 @@ function Dictionary({ app }) {
 
 function Settings({ app }) {
   const [notice, setNotice] = useState('');
+  function applyTheme(t) { app.setTheme && app.setTheme(t); setNotice('Theme: ' + t + ' applied'); }
+  function applyInk(c) { app.setInk && app.setInk(c); setNotice('Ink color updated'); }
+  function applyFont(f) { app.setFont && app.setFont(f); setNotice('Font: ' + f + ' applied'); }
+  function applyBg(b) { app.setBg && app.setBg(b); setNotice('Background: ' + b + ' applied'); }
   const [showPaywall, setShowPaywall] = useState(false);
   function exportJournal() { setNotice(`Export ready: ${app.dreams.length} dreams and ${app.fragments.length} fragments.`); }
   function reset() { app.resetData(); setNotice('Demo data restored.'); }
@@ -531,13 +569,13 @@ function Settings({ app }) {
     <Section title="Journal Appearance" />
     <GlassCard><Text style={styles.label}>Theme Picker</Text><View style={styles.chips}>{themes.map(t => <Pill key={t} text={t} active={app.settings.theme === t} onPress={() => app.updateSettings({ theme: t })} />)}</View><Text style={styles.label}>Ink Colors</Text><View style={styles.chips}>{inkColors.map(t => <Pill key={t} text={t} active={app.settings.ink === t} onPress={() => app.updateSettings({ ink: t })} />)}</View><Text style={styles.label}>Journal Fonts</Text><View style={styles.chips}>{fonts.map(t => <Pill key={t} text={t} active={app.settings.font === t} onPress={() => app.updateSettings({ font: t })} />)}</View><Row icon="▧" title="Journal Backgrounds" sub="Paper, glass, stars, mist" right={app.settings.background} onPress={() => app.updateSettings({ background: app.settings.background === 'Glass' ? 'Stars' : 'Glass' })} last /></GlassCard>
     <Section title="Theme" />
-    <GlassCard><View style={{flexDirection:'row',gap:8}}>{[["✨","Glacier","Icy blue, liquid glass"],["🌙","Midnight","Deep navy, dark glass"],["🌌","Aurora","Deep blue, silver glass"]].map(t=><TouchableOpacity key={t[1]} style={{flex:1,padding:12,borderRadius:14,alignItems:'center',backgroundColor:C.card,borderWidth:1,borderColor:'rgba(79,203,255,.12)'}}><Text style={{fontSize:22}}>{t[0]}</Text><Text style={[styles.small,{fontWeight:'700',marginTop:4}]}>{t[1]}</Text><Text style={[styles.body,{fontSize:9}]}>{t[2]}</Text></TouchableOpacity>)}</View></GlassCard>
+    <GlassCard><View style={{flexDirection:'row',gap:8}}>{[["✨","Glacier","Icy blue, liquid glass"],["🌙","Midnight","Deep navy, dark glass"],["🌌","Aurora","Deep blue, silver glass"]].map(t=><TouchableOpacity key={t[1]} onPress={()=>applyTheme(t[1])} activeOpacity={0.7} style={{flex:1,padding:12,borderRadius:14,alignItems:'center',backgroundColor:C.card,borderWidth:1,borderColor:'rgba(79,203,255,.12)'}}><Text style={{fontSize:22}}>{t[0]}</Text><Text style={[styles.small,{fontWeight:'700',marginTop:4}]}>{t[1]}</Text><Text style={[styles.body,{fontSize:9}]}>{t[2]}</Text></TouchableOpacity>)}</View></GlassCard>
     <Section title="Ink Color" />
-    <GlassCard><View style={{flexDirection:'row',gap:8,flexWrap:'wrap'}}>{["#4FCBFF","#FF3B30","#FF9500","#FFCC00","#34C759","#00C7BE","#5856D6","#AF52DE","#FF2D55","#A2845E","#07111F","#8E8E93"].map(c=><View key={c} style={{width:32,height:32,borderRadius:10,backgroundColor:c,borderWidth:2,borderColor:'rgba(79,203,255,.1)'}}/>)}</View></GlassCard>
+    <GlassCard><View style={{flexDirection:'row',gap:8,flexWrap:'wrap'}}>{["#4FCBFF","#FF3B30","#FF9500","#FFCC00","#34C759","#00C7BE","#5856D6","#AF52DE","#FF2D55","#A2845E","#07111F","#8E8E93"].map(c=><TouchableOpacity key={c} onPress={()=>applyInk(c)} style={{width:32,height:32,borderRadius:10,backgroundColor:c,borderWidth:2,borderColor:'rgba(79,203,255,.1)'}}/>)}</View></GlassCard>
     <Section title="Journal Font" />
-    <GlassCard><View style={styles.chips}>{["System","Nunito","Garamond","Georgia","Courier New","Times New Roman"].map(f=><Pill key={f} text={f}/>)}</View></GlassCard>
+    <GlassCard><View style={styles.chips}>{["System","Nunito","Garamond","Georgia","Courier New","Times New Roman"].map(f=><Pill key={f} text={f} active={f===(app.selectedFont||"System")} onPress={()=>applyFont(f)}/>)}</View></GlassCard>
     <Section title="Background" />
-    <GlassCard><View style={styles.chips}>{["Glass","Paper","Stars","Mist","Ocean"].map(b=><Pill key={b} text={b}/>)}</View></GlassCard>
+    <GlassCard><View style={styles.chips}>{["Glass","Paper","Stars","Mist","Ocean"].map(b=><Pill key={b} text={b} active={b===(app.selectedBg||"Glass")} onPress={()=>applyBg(b)}/>)}</View></GlassCard>
     <Section title="Subscription" />
     <GlassCard><Row icon="👑" title="DriftLoom Plus" sub="Advanced insights, symbol evolution, themes, export" right="Manage" onPress={() => setShowPaywall(!showPaywall)} />{showPaywall ? <View style={styles.paywall}><Text style={styles.h2}>Premium Experience</Text><Text style={styles.body}>Monthly $3.99 · Annual $29.99 with 7-day trial · Lifetime Founder $39.99</Text><View style={styles.grid2}>{premiumFeatures.map(x => <Pill key={x} text={x} />)}</View><View style={styles.actionRow}><Primary compact onPress={() => { app.updateSettings({ hasAccess: true }); setNotice('Trial started.'); }}>Try 7 Days Free</Primary><Secondary onPress={() => setNotice('Restore purchase checked.')}>Restore</Secondary></View></View> : <Primary compact onPress={() => setShowPaywall(true)}>Try 7 Days Free</Primary>}</GlassCard>
     <Section title="Privacy" />
@@ -564,6 +602,11 @@ function TabBar({ tab, setTab }) {
 
 export default function App() {
   const [tab, setTab] = useState('Home');
+  const [currentTheme, setCurrentTheme] = useState('Glacier');
+  const [selectedInk, setSelectedInk] = useState('#4FCBFF');
+  const [selectedFont, setSelectedFont] = useState('System');
+  const [selectedBg, setSelectedBg] = useState('Glass');
+  const themeColors = THEMES[currentTheme] || THEMES.Glacier;
   const [dreams, setDreams] = useState(defaultDreams);
   const [fragments, setFragments] = useState(defaultFragments);
   const [draft, setDraft] = useState(emptyDraft);
@@ -625,7 +668,7 @@ export default function App() {
 
   const app = { dreams, setDreams, fragments, setFragments, draft, setDraft, saveDream, editDream, addFragment, checkin, setCheckin, checks, setChecks, settings, updateSettings, personalMeanings, setPersonalMeanings, symbolCounts, stats, completeness, factIndex, nextFact, affirmationIndex, nextAffirmation, resetData };
   const Current = tabComponents[tab];
-  return <SafeAreaView style={styles.app}><StatusBar barStyle="light-content" /><View style={styles.phone}><Current app={app} setTab={setTab} /><TabBar tab={tab} setTab={setTab} /></View></SafeAreaView>;
+    <SafeAreaView style={[styles.app, { backgroundColor: themeColors.bg[0] }]}>
 }
 
 const styles = StyleSheet.create({
