@@ -11,6 +11,9 @@ export function useMoonPhase() {
   const phase = jd / 29.53058867;
   const age = (phase - Math.floor(phase)) * 29.53;
   
+  // Calculate illumination percentage
+  const illumination = Math.round(50 * (1 - Math.cos(2 * Math.PI * age / 29.53)));
+
   const phases = [
     { name: "New Moon", emoji: "🌑", cycle: 0 },
     { name: "Waxing Crescent", emoji: "🌒", cycle: 1 },
@@ -33,5 +36,5 @@ export function useMoonPhase() {
   else if (age < 27.68) idx = 7;
   else idx = 0;
   
-  return phases[idx];
+  return { ...phases[idx], illumination, age: Math.round(age * 10) / 10 };
 }
