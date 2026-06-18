@@ -6,7 +6,7 @@ import { useApp } from '../context/AppContext';
 const APP_LOGO = require('../../assets/brand/driftloom-logo.png');
 
 export default function SettingsScreen() {
-  const { colors, lockEnabled, setLockEnabled, biometricEnabled, setBiometricEnabled,
+  const { colors, lockEnabled, setLockEnabled, useBiometric, setUseBiometric,
     hasAccess, setShowPaywall } = useApp();
 
   const privacyItems = [
