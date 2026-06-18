@@ -53,9 +53,36 @@ const symbolLibrary = [
   { term: 'Fire', icon: '🔥', cat: 'Elements', meaning: 'Passion, transformation, danger, inspiration, and energetic release.', seen: 3, personal: 'Creative pressure.' },
   { term: 'Clock', icon: '🕰️', cat: 'Objects', meaning: 'Timing, pressure, mortality, patience, and the feeling of being late or early.', seen: 2, personal: 'Usually anxiety about deadlines.' },
   { term: 'Forest', icon: '🌲', cat: 'Places', meaning: 'Unknown paths, growth, hidden life, and the edge of clarity.', seen: 4, personal: 'A place for quiet searching.' },
+  { term: 'Snake', icon: '🐍', cat: 'Animals', meaning: 'Transformation, healing, hidden fears, and rebirth.', seen: 4, personal: '' },
+  { term: 'Butterfly', icon: '🦋', cat: 'Animals', meaning: 'Transformation, rebirth, becoming a new version of yourself.', seen: 2, personal: '' },
+  { term: 'Cat', icon: '🐱', cat: 'Animals', meaning: 'Independence, mystery, intuition. Trust your instincts.', seen: 2, personal: '' },
+  { term: 'Bird', icon: '🐦', cat: 'Animals', meaning: 'Freedom, perspective, rising above. Messages from the unconscious.', seen: 3, personal: '' },
+  { term: 'Fish', icon: '🐟', cat: 'Animals', meaning: 'Unconscious thoughts, abundance, going with the flow.', seen: 1, personal: '' },
+  { term: 'Stars', icon: '⭐', cat: 'Nature', meaning: 'Hope, guidance, seeking direction, destiny.', seen: 2, personal: '' },
+  { term: 'Rain', icon: '🌧️', cat: 'Elements', meaning: 'Emotional release, renewal, cleansing, letting go.', seen: 2, personal: '' },
+  { term: 'Wind', icon: '💨', cat: 'Elements', meaning: 'Change, invisible forces beyond your control.', seen: 1, personal: '' },
+  { term: 'Earth', icon: '🌍', cat: 'Elements', meaning: 'Stability, grounding, practical matters need attention.', seen: 2, personal: '' },
+  { term: 'Mountain', icon: '⛰️', cat: 'Places', meaning: 'Challenges, ambition, spiritual ascent, achievement.', seen: 1, personal: '' },
+  { term: 'Crown', icon: '👑', cat: 'Objects', meaning: 'Authority, self-worth, stepping into your power.', seen: 1, personal: '' },
+  { term: 'Feather', icon: '🪶', cat: 'Objects', meaning: 'Freedom, spiritual messages, releasing something heavy.', seen: 2, personal: '' },
+  { term: 'Falling', icon: '⬇️', cat: 'Actions', meaning: 'Loss of control, letting go, fear of failing.', seen: 3, personal: '' },
+  { term: 'Running', icon: '🏃', cat: 'Actions', meaning: 'Avoidance or pursuit. Escaping or chasing a goal.', seen: 2, personal: '' },
+  { term: 'Swimming', icon: '🏊', cat: 'Actions', meaning: 'Navigating emotions, going with the flow.', seen: 1, personal: '' },
+  { term: 'Flying', icon: '🕊️', cat: 'Actions', meaning: 'Freedom and limitless potential. Rising above limitations.', seen: 7, personal: '' },
+  { term: 'Lucid Dream', icon: '💎', cat: 'Types', meaning: 'Self-awareness in sleep. Conscious meets unconscious.', seen: 2, personal: '' },
+  { term: 'Recurring', icon: '🔄', cat: 'Types', meaning: 'Unresolved message repeating until addressed.', seen: 3, personal: '' },
+  { term: 'Nightmare', icon: '🌑', cat: 'Types', meaning: 'Processing fear and anxiety. Protective purpose.', seen: 2, personal: '' },
+  { term: 'False Awakening', icon: '👁️', cat: 'Types', meaning: 'Dreaming of waking up while still asleep.', seen: 1, personal: '' },
+  { term: 'Healing Dream', icon: '💚', cat: 'Types', meaning: 'Emotional or physical restoration during sleep.', seen: 1, personal: '' },
+  { term: 'Prophetic', icon: '🔮', cat: 'Types', meaning: 'Dreams that seem to predict future events.', seen: 1, personal: '' },
 ];
 
-const categories = ['All', 'Nature', 'People', 'Places', 'Objects', 'Actions', 'Animals', 'Elements'];
+const categories = ['All', 'Nature', 'People', 'Places', 'Objects', 'Actions', 'Animals', 'Elements', 'Types'];
+const tarotCards = [['☽','The Moon','Trust your intuition tonight.'],['⭐','The Star','Hope and healing flow through dreams.'],['🗼','The Tower','Old beliefs may shake. Let what crumbles reveal truth.'],['🏔️','The Hermit','Solitude brings clarity. Look inward.'],['💕','The Lovers','Connection and choice appear. What does your heart want?'],['🃏','The Fool','A new journey begins. Leap without fear.'],['✨','The Magician','You have power to shape tonight.'],['🔮','The High Priestess','Mystery deepens. Pay attention to what is hidden.'],['🎡','Wheel of Fortune','Change spins through dreams. Embrace it.'],['🌍','The World','Completion. Tonight closes a chapter.']];
+const morningRituals = [['🌙','Whisper your dream intention 3 times before sleep'],['📓','Place journal under your pillow'],['💧','Drink water and say: I will remember my dreams'],['🚪','Visualize a door — decide what is behind it'],['⏰','Set alarm 30 min early for recall window'],['✋','Draw a symbol on your hand — find it in your dream'],['💬','Tell someone about yesterday dream']];
+const wakeFeelings = ['Refreshed','Unsettled','Peaceful','Emotional','Groggy','Energized','Confused','Inspired'];
+const dreamRoles = ['Myself','Someone else','Observer','Shifting','Invisible'];
+const dreamFields = ['How long did it feel?','Weather in dream','Sounds you heard','Dream texture','Dream gravity','Dream temperature','Dream location','Dream scent','Lighting','Scene transitions','Characters','Impossible things','Dream dialogue','Eye contact moment','Numbers or text','What woke you up?','How did time flow?','How did it end?','Superpowers','How you moved','Physical sensations','Dream mission','Background soundtrack','Technology present','Clearest moment'];
 const moods = ['Happy', 'Calm', 'Anxious', 'Confused', 'Sad', 'Inspired', 'Peaceful', 'Mysterious'];
 const genres = ['Surreal', 'Memory', 'Adventure', 'Nightmare', 'Healing', 'Lucid', 'Creative', 'Recurring'];
 const cloudRooms = ['Calm Mist', 'Starlight', 'Deep Ocean', 'Moon Library', 'Forest Window', 'Crystal City'];
@@ -177,6 +204,10 @@ function Home({ app, setTab }) {
     <GraphicCard image={water} title="Water" sub="Emotion, intuition, cleansing, flow. Track how this symbol changes for you over time." imageStyle={{ height: 116 }}><Primary compact onPress={() => setTab('Dictionary')}>Open Symbol History</Primary></GraphicCard>
     <Section title="AuraLunis Home Features" />
     <GlassCard><Row icon="☁️" title="Dream Weather" sub="Clear conditions for deep rest and recall" right="Good" /><Row icon="🎧" title="Sleep Sound Palette" sub={sound} right="Change" onPress={() => setSound(sleepSounds[(sleepSounds.indexOf(sound) + 1) % sleepSounds.length])} /><Row icon="🏔️" title="Cloud Rooms" sub={room} right="Change" onPress={() => setRoom(cloudRooms[(cloudRooms.indexOf(room) + 1) % cloudRooms.length])} /><Row icon="✦" title="Private Affirmation" sub={affirmations[app.affirmationIndex]} right="Next" onPress={app.nextAffirmation} /><Row icon="💡" title="Dream Fact" sub={dreamFacts[app.factIndex]} right="Next" onPress={app.nextFact} last /></GlassCard>
+    <Section title="Dream Tarot" right="Draw" />
+    <GlassCard>{tarotCards.slice(0,3).map(t=><Row key={t[1]} icon={t[0]} title={t[1]} sub={t[2]} />)}</GlassCard>
+    <Section title="Morning Rituals" />
+    <GlassCard>{morningRituals.map((r,i)=><Row key={r[1]} icon={r[0]} title={r[1]} last={i===morningRituals.length-1} />)}</GlassCard>
     <Section title="Recent Fragments" right="See All" onPress={() => setTab('Settings')} />
     <GlassCard>{[...app.fragments, ...app.dreams].slice(0, 5).map((d, i) => <Row key={d.id || d.title + i} icon={d.type === 'Idea' ? '💡' : d.type === 'Dream Seed' ? '✦' : '🌙'} title={d.title} sub={`${d.type || 'Dream'} · ${d.symbols || d.notes || 'Private entry'}`} right={d.date} last={i === Math.min(4, app.fragments.length + app.dreams.length - 1)} />)}</GlassCard>
   </Screen>;
@@ -207,6 +238,18 @@ function Journal({ app, setTab }) {
         <Text style={styles.label}>Mood When Woke</Text><View style={styles.chips}>{moods.slice(0, 6).map(m => <Pill key={m} text={m} active={d.mood === m} onPress={() => set({ mood: m })} />)}</View>
         <Row icon="◉" title="Lucid?" sub="Were you aware you were dreaming?" right={<Toggle on={d.lucid} />} onPress={() => set({ lucid: !d.lucid })} />
         <Input label="Symbols (comma separated)" value={d.symbols} onChangeText={symbols => set({ symbols })} placeholder="Clouds, City, Crystal, Doorway" />
+    <Section title="Wake Feeling" />
+    <GlassCard><View style={styles.chips}>{wakeFeelings.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
+    <Section title="Dream Role" />
+    <GlassCard><View style={styles.chips}>{dreamRoles.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
+    <Section title="Expanded Dream Fields" />
+    <GlassCard><View style={styles.grid2}>{dreamFields.map(f=><Pill key={f} text={f}/>)}</View></GlassCard>
+    <Section title="Wake Feeling" />
+    <GlassCard><View style={styles.chips}>{wakeFeelings.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
+    <Section title="Dream Role" />
+    <GlassCard><View style={styles.chips}>{dreamRoles.map(x=><Pill key={x} text={x}/>)}</View></GlassCard>
+    <Section title="Expanded Dream Fields" />
+    <GlassCard><View style={styles.grid2}>{dreamFields.map(f=><Pill key={f} text={f}/>)}</View></GlassCard>
         <TouchableOpacity onPress={() => setMode('deep')}><Text style={styles.deepLink}>Deep Journal 〉</Text></TouchableOpacity>
         <Primary onPress={save}>✓ Save Dream</Primary>
         <Text style={styles.footerNote}>You can always edit and add more details later.</Text>
