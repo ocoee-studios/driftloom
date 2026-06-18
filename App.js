@@ -20,6 +20,12 @@ const C = {
   card: 'rgba(14,43,92,.44)',
   cardDark: 'rgba(7,17,31,.92)',
 };
+const THEMES = {
+  Glacier: { bg: '#D6EAF8', card: 'rgba(255,255,255,0.35)', border: 'rgba(255,255,255,0.5)', text: '#07111F', accent: '#0A84FF' },
+  Midnight: { bg: '#02040A', card: 'rgba(14,43,92,0.4)', border: 'rgba(79,203,255,0.12)', text: '#EAF6FF', accent: '#4FCBFF' },
+  Aurora: { bg: '#0A1628', card: 'rgba(79,203,255,0.08)', border: 'rgba(79,203,255,0.18)', text: '#EAF6FF', accent: '#4FCBFF' },
+};
+
 
 const logo = require('./assets/brand/driftloom-logo-transparent.png');
 const moon = require('./assets/brand/moon-premium.png');
