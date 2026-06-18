@@ -138,7 +138,7 @@ const themes = ['Midnight', 'Glacier', 'Dawn'];
 const inkColors = ['Icy Blue', 'Silver', 'White', 'Ocean', 'Gold', 'Violet', 'Green', 'Rose', 'Mist', 'Deep Navy', 'Moon', 'Cloud'];
 const fonts = ['System', 'Serif', 'Mono', 'Rounded', 'Editorial', 'Notebook'];
 const premiumFeatures = ['Advanced Pattern Insights', 'Symbol Evolution', 'Timeline & Calendar', 'Creative Seeds', 'Custom Themes', 'Security Lock', 'Export & Backup', 'Future AI Reflection'];
-const auralunisFeatures = ['Daily Check-in','Feeling Picker','Symbol of the Day','Dream Fact','Dream Weather','Sleep Sounds','Cloud Rooms','Affirmations','Dream Wisdom Quote','Morning Catch Prompt','Top Mood','Top Symbol','Dream Score','Completeness Meter','Dream Genre','Dream World Fields','Characters & Events','Body & Powers','Context Fields','Dream Mission','Reality Breaks','Dialogue','Déjà Vu','Dream Ending','Pattern Detector','Analysis Lenses','Dream DNA','Mood Map','Recurring Symbol Evolution','Creative Seeds','Opt-in AI Reflection','Moon Guide','Sleep Stages','REM Estimator','Smart Wake','Reality Checks','Lucid Techniques','Training Stages','Personal Symbol History','User Meanings','Security Controls','Passcode Lock','Biometric Language','Theme Picker','Ink Colors','Journal Fonts','Journal Backgrounds','Export Journal','Reset Journal','Paywall Modal','Native IAP Copy','Privacy Nutrition Label'];
+const driftloomFeatures = ['Daily Check-in','Feeling Picker','Symbol of the Day','Dream Fact','Dream Weather','Sleep Sounds','Cloud Rooms','Affirmations','Dream Wisdom Quote','Morning Catch Prompt','Top Mood','Top Symbol','Dream Score','Completeness Meter','Dream Genre','Dream World Fields','Characters & Events','Body & Powers','Context Fields','Dream Mission','Reality Breaks','Dialogue','Déjà Vu','Dream Ending','Pattern Detector','Analysis Lenses','Dream DNA','Mood Map','Recurring Symbol Evolution','Creative Seeds','Opt-in AI Reflection','Moon Guide','Sleep Stages','REM Estimator','Smart Wake','Reality Checks','Lucid Techniques','Training Stages','Personal Symbol History','User Meanings','Security Controls','Passcode Lock','Biometric Language','Theme Picker','Ink Colors','Journal Fonts','Journal Backgrounds','Export Journal','Reset Journal','Paywall Modal','Native IAP Copy','Privacy Nutrition Label'];
 
 function nowId(prefix) { return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 999)}`; }
 function parseSymbols(text) { return (text || '').split(',').map(s => s.trim()).filter(Boolean); }
@@ -193,7 +193,7 @@ function GraphicCard({ image, title, sub, children, imageStyle }) {
   return <GlassCard style={{ padding: 0, overflow: 'hidden' }}><View style={styles.graphicTop}><Image source={image} style={[styles.graphicImage, imageStyle]} resizeMode="contain" /></View><View style={styles.graphicBody}><Text style={styles.h2}>{title}</Text>{sub ? <Text style={styles.body}>{sub}</Text> : null}{children}</View></GlassCard>;
 }
 function Notice({ text }) { return text ? <GlassCard success><Text style={styles.h3}>✓ {text}</Text></GlassCard> : null; }
-function FeatureGrid() { return <View style={styles.grid2}>{auralunisFeatures.map((f, i) => <Pill key={f} text={f} active={i % 8 === 0} />)}</View>; }
+function FeatureGrid() { return <View style={styles.grid2}>{driftloomFeatures.map((f, i) => <Pill key={f} text={f} active={i % 8 === 0} />)}</View>; }
 
 function Home({ app, setTab }) {
   const [seed, setSeed] = useState('');
@@ -222,7 +222,7 @@ function Home({ app, setTab }) {
     <GlassCard><View style={styles.between}><View style={{ flex: 1 }}><Text style={styles.small}>Current Moon</Text><Text style={styles.h2}>Waxing Gibbous</Text><Text style={styles.body}>Illumination: 72% · Dream recall may feel vivid tonight.</Text></View><Image source={moon} style={styles.moonIcon} resizeMode="contain" /></View></GlassCard>
     <Section title="Symbol of the Day" right="Open Dictionary" onPress={() => setTab('Dictionary')} />
     <GraphicCard image={water} title="Water" sub="Emotion, intuition, cleansing, flow. Track how this symbol changes for you over time." imageStyle={{ height: 116 }}><Primary compact onPress={() => setTab('Dictionary')}>Open Symbol History</Primary></GraphicCard>
-    <Section title="AuraLunis Home Features" />
+    <Section title="DriftLoom Home Features" />
     <GlassCard><Row icon="☁️" title="Dream Weather" sub="Clear conditions for deep rest and recall" right="Good" /><Row icon="🎧" title="Sleep Sound Palette" sub={sound} right="Change" onPress={() => setSound(sleepSounds[(sleepSounds.indexOf(sound) + 1) % sleepSounds.length])} /><Row icon="🏔️" title="Cloud Rooms" sub={room} right="Change" onPress={() => setRoom(cloudRooms[(cloudRooms.indexOf(room) + 1) % cloudRooms.length])} /><Row icon="✦" title="Private Affirmation" sub={affirmations[app.affirmationIndex]} right="Next" onPress={app.nextAffirmation} /><Row icon="💡" title="Dream Fact" sub={dreamFacts[app.factIndex]} right="Next" onPress={app.nextFact} last /></GlassCard>
     <Section title="Dream Challenges" right="PLUS" />
     <GlassCard>{streakChallenges.map((c,i)=><Row key={c.title} icon={c.icon} title={c.title} sub={c.desc} right={c.reward} last={i===streakChallenges.length-1} />)}</GlassCard>
@@ -452,7 +452,7 @@ function Settings({ app }) {
     <GlassCard><Row icon="✓" title="Stored locally first" sub="No hidden AI calls in prototype." /><Row icon="×" title="No ads. No third-party tracking." /><Row icon="⇩" title="Export or delete anytime." /><Row icon="⊕" title="Optional account later" sub="Not required for prototype." last /></GlassCard>
     <Section title="App Store Readiness" />
     <GlassCard><Row icon="□" title="Privacy Policy" /><Row icon="□" title="Terms of Use" /><Row icon="⊕" title="Support Email" /><Row icon="☑" title="Screenshots" sub="Use approved mockup style" /><Row icon="ⓘ" title="About DriftLoom" right="v1.0.0" last /></GlassCard>
-    <Section title="AuraLunis Feature Checklist" />
+    <Section title="DriftLoom Feature Checklist" />
     <GlassCard><FeatureGrid /></GlassCard>
   </Screen>;
 }
