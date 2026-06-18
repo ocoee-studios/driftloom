@@ -83,6 +83,26 @@ const morningRituals = [['🌙','Whisper your dream intention 3 times before sle
 const wakeFeelings = ['Refreshed','Unsettled','Peaceful','Emotional','Groggy','Energized','Confused','Inspired'];
 const dreamRoles = ['Myself','Someone else','Observer','Shifting','Invisible'];
 const dreamFields = ['How long did it feel?','Weather in dream','Sounds you heard','Dream texture','Dream gravity','Dream temperature','Dream location','Dream scent','Lighting','Scene transitions','Characters','Impossible things','Dream dialogue','Eye contact moment','Numbers or text','What woke you up?','How did time flow?','How did it end?','Superpowers','How you moved','Physical sensations','Dream mission','Background soundtrack','Technology present','Clearest moment'];
+const streakChallenges = [
+  { days: 7, icon: '🔥', title: '7-Day Dreamer', desc: 'Log a dream 7 days in a row', reward: '50 XP + badge' },
+  { days: 14, icon: '⚡', title: 'Fortnight Flow', desc: 'Two straight weeks of dream recall', reward: '150 XP + badge' },
+  { days: 30, icon: '🌙', title: 'Moon Cycle Master', desc: 'One full lunar cycle of dream logging', reward: '500 XP + theme unlock' },
+  { days: 90, icon: '👑', title: 'Dream Architect', desc: 'Three months — you are a true dream practitioner', reward: '2000 XP + lifetime title' },
+];
+const creativeFormats = [
+  { icon: '📖', title: 'Story Outline', desc: 'Convert dream into a 3-act narrative structure' },
+  { icon: '🎨', title: 'Art Prompt', desc: 'Generate a visual art brief from dream imagery' },
+  { icon: '🎵', title: 'Song Seed', desc: 'Extract mood, rhythm, and lyric fragments' },
+  { icon: '🧘', title: 'Meditation Script', desc: 'Turn dream atmosphere into a guided meditation' },
+  { icon: '📝', title: 'Journal Prompt', desc: 'Deep reflection questions based on dream themes' },
+  { icon: '🎬', title: 'Scene Treatment', desc: 'Film/video scene description with mood and visuals' },
+];
+const weeklyReportData = {
+  dreams: 5, topMood: 'Curious', topSymbol: 'Doorway', vividnessAvg: 7.2,
+  vividnessTrend: 'up', lucidCount: 1, recallRate: 72,
+  insight: 'Your dreams are showing a pattern of thresholds and transitions. Pay attention to doorway symbols this week.',
+};
+
 const moods = ['Happy', 'Calm', 'Anxious', 'Confused', 'Sad', 'Inspired', 'Peaceful', 'Mysterious'];
 const genres = ['Surreal', 'Memory', 'Adventure', 'Nightmare', 'Healing', 'Lucid', 'Creative', 'Recurring'];
 const cloudRooms = ['Calm Mist', 'Starlight', 'Deep Ocean', 'Moon Library', 'Forest Window', 'Crystal City'];
@@ -204,6 +224,8 @@ function Home({ app, setTab }) {
     <GraphicCard image={water} title="Water" sub="Emotion, intuition, cleansing, flow. Track how this symbol changes for you over time." imageStyle={{ height: 116 }}><Primary compact onPress={() => setTab('Dictionary')}>Open Symbol History</Primary></GraphicCard>
     <Section title="AuraLunis Home Features" />
     <GlassCard><Row icon="☁️" title="Dream Weather" sub="Clear conditions for deep rest and recall" right="Good" /><Row icon="🎧" title="Sleep Sound Palette" sub={sound} right="Change" onPress={() => setSound(sleepSounds[(sleepSounds.indexOf(sound) + 1) % sleepSounds.length])} /><Row icon="🏔️" title="Cloud Rooms" sub={room} right="Change" onPress={() => setRoom(cloudRooms[(cloudRooms.indexOf(room) + 1) % cloudRooms.length])} /><Row icon="✦" title="Private Affirmation" sub={affirmations[app.affirmationIndex]} right="Next" onPress={app.nextAffirmation} /><Row icon="💡" title="Dream Fact" sub={dreamFacts[app.factIndex]} right="Next" onPress={app.nextFact} last /></GlassCard>
+    <Section title="Dream Challenges" right="PLUS" />
+    <GlassCard>{streakChallenges.map((c,i)=><Row key={c.title} icon={c.icon} title={c.title} sub={c.desc} right={c.reward} last={i===streakChallenges.length-1} />)}</GlassCard>
     <Section title="Dream Tarot" right="Draw" />
     <GlassCard>{tarotCards.slice(0,3).map(t=><Row key={t[1]} icon={t[0]} title={t[1]} sub={t[2]} />)}</GlassCard>
     <Section title="Morning Rituals" />
@@ -252,6 +274,12 @@ function Journal({ app, setTab }) {
     <GlassCard><View style={styles.grid2}>{dreamFields.map(f=><Pill key={f} text={f}/>)}</View></GlassCard>
         <TouchableOpacity onPress={() => setMode('deep')}><Text style={styles.deepLink}>Deep Journal 〉</Text></TouchableOpacity>
         <Primary onPress={save}>✓ Save Dream</Primary>
+    <Section title="AI Dream Reading" right="PLUS" />
+    <GlassCard><Text style={styles.h3}>🔮 AI Dream Interpretation</Text><Text style={styles.body}>{`\nSave a dream, then tap for AI analysis. Reads your symbols, emotional patterns, and connections to past dreams.\n\nPowered by Anthropic Claude — private, no data stored.`}</Text><Primary compact onPress={()=>{}}>Analyze This Dream</Primary></GlassCard>
+    <Section title="Audio Capture" right="PLUS" />
+    <GlassCard><View style={styles.between}><View style={{flex:1}}><Text style={styles.h3}>🎙 Voice Dream Capture</Text><Text style={styles.body}>Record a voice memo the moment you wake — auto-transcribed into your journal.</Text></View><View style={{width:56,height:56,borderRadius:28,backgroundColor:'rgba(79,203,255,0.15)',borderWidth:2,borderColor:C.blue,alignItems:'center',justifyContent:'center'}}><Text style={{fontSize:24}}>⏺</Text></View></View></GlassCard>
+    <Section title="Dream Card" right="PLUS" />
+    <GlassCard><Text style={styles.h3}>✦ Export as Beautiful Card</Text><Text style={styles.body}>Turn this dream into a gorgeous branded card for Instagram, Pinterest, or your journal. DriftLoom aesthetic with mood, symbols, and key imagery.</Text><View style={styles.chips}>{['Instagram Story','Square Post','Pinterest Pin','Print Card'].map(x=><Pill key={x} text={x}/>)}</View><Primary compact onPress={()=>{}}>Create Dream Card</Primary></GlassCard>
         <Text style={styles.footerNote}>You can always edit and add more details later.</Text>
       </GlassCard>
       <Section title="Recent Dreams" />
@@ -315,6 +343,14 @@ function Insights({ app, setTab }) {
     <GlassCard><Row icon="💡" title="Story concept" sub="A floating city that stores memories in glass towers." right="Save" onPress={() => app.addFragment({ type: 'Creative Seed', title: 'Floating city that stores memories in glass towers' })} /><Row icon="🎨" title="Art prompt" sub="A silver doorway opening into ocean rain." right="Save" onPress={() => app.addFragment({ type: 'Creative Seed', title: 'Silver doorway opening into ocean rain' })} /><Row icon="🎵" title="Song seed" sub="Blue branches, soft thunder, and a voice in the trees." right="Save" onPress={() => app.addFragment({ type: 'Creative Seed', title: 'Blue branches and a voice in the trees' })} last /></GlassCard>
     <Section title="Private Insight Note" />
     <GlassCard><Text style={styles.body}>No hidden AI calls. Future AI reflection should be opt-in and clearly disclosed. Your journal stays private by design.</Text></GlassCard>
+    <Section title="Dream Calendar" right="PLUS" />
+    <GlassCard><Text style={styles.h3}>📅 Dream Timeline</Text><Text style={styles.body}>Visual month grid — each day color-coded by mood. Tap any day to see that night's dream. Track streaks and patterns at a glance.</Text><View style={styles.grid2}>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=><Text key={d} style={[styles.small,{flex:1,textAlign:'center'}]}>{d}</Text>)}</View><View style={styles.grid2}>{Array.from({length:28}).map((_,i)=><View key={i} style={{width:36,height:36,borderRadius:8,backgroundColor:i%3===0?'rgba(79,203,255,0.3)':i%5===0?'rgba(40,217,155,0.3)':i%7===0?'rgba(255,87,87,0.2)':'rgba(14,43,92,0.3)',margin:2,alignItems:'center',justifyContent:'center'}}><Text style={styles.small}>{i+1}</Text></View>)}</View></GlassCard>
+    <Section title="Symbol Evolution" right="PLUS" />
+    <GlassCard><Text style={styles.h3}>📈 Symbol Tracking Over Time</Text><Text style={styles.body}>See how your symbols change in frequency and context across weeks and months.</Text><Row icon="🌊" title="Water" sub="Jan: 3x (calm) → Mar: 8x (turbulent) → Jun: 5x (flowing)" right="↗" /><Row icon="🚪" title="Doorway" sub="Appeared 2x before career change, 4x during transition" right="→" /><Row icon="🌙" title="Moon" sub="Peaks around full moon phases. Correlates with vividness." right="↗" last /></GlassCard>
+    <Section title="Dream-to-Creative" right="PLUS" />
+    <GlassCard><Text style={styles.h3}>✨ Dream → Creative Pipeline</Text><Text style={styles.body}>Convert any dream into creative output. AI-powered transformation of your dream material.</Text>{creativeFormats.map((f,i)=><Row key={f.title} icon={f.icon} title={f.title} sub={f.desc} right="→" last={i===creativeFormats.length-1} />)}</GlassCard>
+    <Section title="Weekly Report" right="PLUS" />
+    <GlassCard><Text style={styles.h3}>📊 Weekly Dream Report</Text><View style={styles.stats}><Stat label="Dreams" value={weeklyReportData.dreams} /><Stat label="Vividness" value={weeklyReportData.vividnessAvg} /><Stat label="Recall" value={`${weeklyReportData.recallRate}%`} /></View><Row icon="🎭" title={`Top Mood: ${weeklyReportData.topMood}`} sub="Most frequent emotional state this week" /><Row icon="🔑" title={`Top Symbol: ${weeklyReportData.topSymbol}`} sub="Recurring across 3 of 5 dreams" /><Row icon="💡" title="Weekly Insight" sub={weeklyReportData.insight} last /><Text style={[styles.body,{marginTop:8,fontStyle:'italic'}]}>Your vividness is trending {weeklyReportData.vividnessTrend}. {weeklyReportData.lucidCount} lucid dream this week.</Text></GlassCard>
   </Screen>;
 }
 
