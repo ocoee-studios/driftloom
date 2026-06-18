@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#02040A"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ocoeestudios.driftloom",
@@ -31,9 +33,7 @@
       },
       "package": "com.ocoeestudios.driftloom"
     },
-    "plugins": [
-      "expo-local-authentication"
-    ],
+    "plugins": [],
     "extra": {}
   }
 }
