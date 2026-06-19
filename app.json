@@ -1,1 +1,27 @@
-{"expo":{"name":"DriftLoom","slug":"driftloom-exact-component-app","version":"1.0.0","orientation":"portrait","icon":"./assets/brand/driftloom-logo.png","splash":{"image":"./assets/brand/driftloom-logo.png","resizeMode":"contain","backgroundColor":"#02040A"},"ios":{"bundleIdentifier":"com.ocoeestudios.driftloom"},"android":{"package":"com.ocoeestudios.driftloom"},"web":{"bundler":"metro"}}}
+{
+  "expo": {
+    "name": "DriftLoom",
+    "slug": "driftloom-exact-component-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/brand/driftloom-logo.png",
+    "splash": {
+      "image": "./assets/brand/driftloom-logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#02040A"
+    },
+    "ios": {
+      "bundleIdentifier": "com.ocoeestudios.driftloom",
+      "supportsTablet": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.ocoeestudios.driftloom"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

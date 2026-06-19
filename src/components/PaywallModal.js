@@ -1,61 +1,102 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Linking, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Linking, ActivityIndicator, StyleSheet } from 'react-native';
 import { useApp } from '../context/AppContext';
 import { LEGAL_URLS } from '../constants/data';
+import { getOfferings, purchasePackage, restorePurchases } from '../services/purchases';
+
+// Display fallbacks shown only while StoreKit prices load / if RC is unconfigured.
+const FALLBACK = { annual: '$29.99', monthly: '$3.99', lifetime: '$39.99' };
 
 export default function PaywallModal() {
-  const { setPurchased, setShowPaywall, startTrial, trialStart, trialActive } = useApp();
+  const { setPurchased, setShowPaywall } = useApp();
+  const [packages, setPackages] = useState(null); // null=loading, {} or {annual,monthly,lifetime}
+  const [busy, setBusy] = useState(false);
 
-  const buy = () => { setPurchased(true); setShowPaywall(false); };
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const offering = await getOfferings();
+      if (!alive) return;
+      if (offering?.availablePackages?.length) {
+        const find = (type) => offering.availablePackages.find((p) => p.packageType === type) || null;
+        setPackages({ annual: find('ANNUAL'), monthly: find('MONTHLY'), lifetime: find('LIFETIME') });
+      } else {
+        setPackages({}); // RC unconfigured → purchases disabled (fail closed)
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
+
+  const price = (key) => packages?.[key]?.product?.priceString || FALLBACK[key];
+
+  const buy = async (key) => {
+    const pkg = packages?.[key];
+    if (!pkg || busy) return;
+    setBusy(true);
+    const ok = await purchasePackage(pkg);
+    setBusy(false);
+    if (ok) { setPurchased(true); setShowPaywall(false); }
+  };
+
+  const restore = async () => {
+    if (busy) return;
+    setBusy(true);
+    const ok = await restorePurchases();
+    setBusy(false);
+    if (ok) { setPurchased(true); setShowPaywall(false); }
+  };
+
+  const ready = packages !== null;
+  const configured = ready && (packages.annual || packages.monthly || packages.lifetime);
+  const lock = busy || !configured;
 
   return (
     <View style={s.overlay}>
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         <Text style={s.emoji}>🌙</Text>
         <Text style={s.title}>Unlock the Portal</Text>
-        <Text style={s.sub}>AI dream analysis, bedtime stories, and all premium features</Text>
+        <Text style={s.sub}>Advanced insights, symbol evolution, custom themes, export & backup</Text>
 
         {/* Annual */}
-        <TouchableOpacity style={s.planFeatured} onPress={buy}>
+        <TouchableOpacity style={s.planFeatured} onPress={() => buy('annual')} disabled={lock} activeOpacity={0.85}>
           <View style={s.badge}><Text style={s.badgeText}>BEST VALUE</Text></View>
-          <Text style={s.planLabel}>🌙 Annual — Save 50%</Text>
-          <Text style={s.planPrice}>$29.99<Text style={s.planPer}>/year</Text></Text>
-          <Text style={s.planNote}>7-day free trial, then $29.99/year. Auto-renews.</Text>
+          <Text style={s.planLabel}>🌙 Annual — 7-day free trial</Text>
+          <Text style={s.planPrice}>{price('annual')}<Text style={s.planPer}>/year</Text></Text>
+          <Text style={s.planNote}>7-day free trial, then {price('annual')}/year. Auto-renews.</Text>
         </TouchableOpacity>
 
         {/* Monthly */}
-        <TouchableOpacity style={s.plan} onPress={buy}>
+        <TouchableOpacity style={s.plan} onPress={() => buy('monthly')} disabled={lock} activeOpacity={0.85}>
           <View style={s.planRow}>
             <Text style={s.planSmLabel}>Monthly</Text>
-            <Text style={s.planSmPrice}>$3.99<Text style={s.planPer}>/mo</Text></Text>
+            <Text style={s.planSmPrice}>{price('monthly')}<Text style={s.planPer}>/mo</Text></Text>
           </View>
-          <Text style={s.planNote}>7-day free trial, then $3.99/month. Auto-renews.</Text>
+          <Text style={s.planNote}>{price('monthly')}/month. Auto-renews.</Text>
         </TouchableOpacity>
 
         {/* Lifetime */}
-        <TouchableOpacity style={s.planLifetime} onPress={buy}>
+        <TouchableOpacity style={s.planLifetime} onPress={() => buy('lifetime')} disabled={lock} activeOpacity={0.85}>
           <View style={s.badgeLife}><Text style={s.badgeText}>FOREVER</Text></View>
           <View style={s.planRow}>
             <Text style={s.planSmLabel}>Lifetime — Pay once</Text>
-            <Text style={s.planSmPrice}>$39.99</Text>
+            <Text style={s.planSmPrice}>{price('lifetime')}</Text>
           </View>
           <Text style={s.planNote}>One-time purchase. All features, forever. No subscription.</Text>
         </TouchableOpacity>
 
-        {/* Trial CTA */}
-        {!trialStart && (
-          <TouchableOpacity style={s.trialBtn} onPress={() => { startTrial(); setShowPaywall(false); }}>
-            <Text style={s.trialText}>Start Your 7-Day Free Trial</Text>
-          </TouchableOpacity>
+        {busy && <ActivityIndicator color="#4FCBFF" style={{ marginVertical: 8 }} />}
+        {ready && !configured && (
+          <Text style={s.expired}>Subscriptions are temporarily unavailable. Please try again later.</Text>
         )}
-        {trialStart && !trialActive && (
-          <Text style={s.expired}>Your free trial has ended. Choose a plan to continue.</Text>
-        )}
+
+        <TouchableOpacity onPress={restore} disabled={busy} style={{ marginBottom: 8 }}>
+          <Text style={s.restore}>Restore Purchases</Text>
+        </TouchableOpacity>
 
         <Text style={s.terms}>
           Payment is charged to your Apple ID account at confirmation. Subscriptions auto-renew unless turned off 24 hours before period end. Lifetime is a one-time charge.
         </Text>
-        <Text style={s.free}>Free to download · Journaling, moon phases, tarot, and dictionary always free</Text>
+        <Text style={s.free}>Free to download · Journaling, moon phases, and dictionary always free</Text>
 
         <View style={s.links}>
           <TouchableOpacity onPress={() => Linking.openURL(LEGAL_URLS.terms)}>
@@ -96,9 +137,8 @@ const s = StyleSheet.create({
   planRow:{flexDirection:'row',justifyContent:'space-between',alignItems:'center'},
   planSmLabel:{fontSize:14,color:'rgba(224,216,240,0.5)'},
   planSmPrice:{fontSize:18,fontWeight:'700',color:'#EAF6FF'},
-  trialBtn:{width:'100%',padding:16,borderRadius:18,backgroundColor:'#4FCBFF',alignItems:'center',marginBottom:14,shadowColor:'#4FCBFF',shadowOffset:{width:0,height:8},shadowOpacity:0.3,shadowRadius:24},
-  trialText:{fontSize:15,fontWeight:'700',color:'white'},
   expired:{fontSize:13,color:'#ff6b6b',marginBottom:10,textAlign:'center'},
+  restore:{fontSize:14,color:'#4FCBFF',fontWeight:'700',textDecorationLine:'underline'},
   terms:{fontSize:11,color:'rgba(224,216,240,0.25)',lineHeight:16,marginBottom:10,textAlign:'center'},
   free:{fontSize:13,color:'rgba(224,216,240,0.2)',marginBottom:10,textAlign:'center'},
   links:{flexDirection:'row',gap:12,marginBottom:6},
