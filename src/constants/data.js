@@ -187,7 +187,7 @@ export const DREAM_WISDOM = [
 ];
 
 export const LEGAL_URLS = {
-  terms: "https://driftloom.netlify.app/terms.html",
-  privacy: "https://driftloom.netlify.app/privacy.html",
+  terms: "https://ocoeestudios.com/terms",
+  privacy: "https://ocoeestudios.com/privacy",
   manageSub: "https://apps.apple.com/account/subscriptions",
 };

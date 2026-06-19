@@ -64,7 +64,10 @@ export function AppProvider({ children }) {
   const TRIAL_DAYS = 7;
   const trialActive = trialStart && (Date.now() - new Date(trialStart).getTime()) < TRIAL_DAYS * 86400000;
   const trialDaysLeft = trialStart ? Math.max(0, TRIAL_DAYS - Math.floor((Date.now() - new Date(trialStart).getTime()) / 86400000)) : TRIAL_DAYS;
-  const hasAccess = purchased || trialActive;
+  // Access is the real RevenueCat entitlement only (synced via purchases.checkAccess
+  // on launch + set true after a successful purchase/restore). No local trial bypass —
+  // the 7-day trial runs through the StoreKit intro offer on the annual subscription.
+  const hasAccess = purchased;
   const colors = THEMES[theme].colors;
   
   // Load from storage
