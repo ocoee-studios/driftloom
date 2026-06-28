@@ -1,0 +1,6 @@
+# Maestro workspace config for the DriftLoom QA harness.
+# Applies to every flow in .maestro/. See https://maestro.mobile.dev
+flows:
+  - "*.yaml"
+  - "flows/*.yaml"
+# smoke.yaml is the deterministic release gate; flows/ holds per-feature checks.

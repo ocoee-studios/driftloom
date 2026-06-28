@@ -1,1 +1,29 @@
-{"scripts":{"start":"expo start","web":"expo start --web"},"dependencies":{"@expo/metro-runtime":"~3.2.1","expo":"~51.0.0","expo-status-bar":"~1.12.1","react":"18.2.0","react-dom":"18.2.0","react-native":"0.74.5","react-native-web":"~0.19.10","@react-native-async-storage/async-storage":"1.23.1"},"devDependencies":{}}
+{
+  "name": "driftloom",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start",
+    "web": "expo start --web",
+    "ios": "expo run:ios",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "maestro test .maestro",
+    "e2e:smoke": "maestro test .maestro/smoke.yaml",
+    "build:ios:local": "eas build --platform ios --local --profile preview",
+    "submit:ios": "eas submit --platform ios --profile production",
+    "android": "expo run:android"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~3.2.1",
+    "expo": "~51.0.0",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-web": "~0.19.10",
+    "@react-native-async-storage/async-storage": "1.23.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.5"
+  }
+}
