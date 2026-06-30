@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Animated, Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { parseSymbols } from './lib/symbols';
 
 const STORAGE_KEY = 'driftloom:everytab-working:v1';
 
@@ -184,7 +185,7 @@ const premiumFeatures = ['Advanced Pattern Insights', 'Symbol Evolution', 'Timel
 const driftloomFeatures = ['Daily Check-in','Feeling Picker','Symbol of the Day','Dream Fact','Dream Weather','Sleep Sounds','Cloud Rooms','Affirmations','Dream Wisdom Quote','Morning Catch Prompt','Top Mood','Top Symbol','Dream Score','Completeness Meter','Dream Genre','Dream World Fields','Characters & Events','Body & Powers','Context Fields','Dream Mission','Reality Breaks','Dialogue','Déjà Vu','Dream Ending','Pattern Detector','Analysis Lenses','Dream DNA','Mood Map','Recurring Symbol Evolution','Creative Seeds','Opt-in AI Reflection','Moon Guide','Sleep Stages','REM Estimator','Smart Wake','Reality Checks','Lucid Techniques','Training Stages','Personal Symbol History','User Meanings','Security Controls','Passcode Lock','Biometric Language','Theme Picker','Ink Colors','Journal Fonts','Journal Backgrounds','Export Journal','Reset Journal','Paywall Modal','Native IAP Copy','Privacy Nutrition Label'];
 
 function nowId(prefix) { return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 999)}`; }
-function parseSymbols(text) { return (text || '').split(',').map(s => s.trim()).filter(Boolean); }
+// parseSymbols moved to ./lib/symbols (pure + unit-tested under vitest).
 function avg(list, key, fallback = 0) { if (!list.length) return fallback; return Math.round(list.reduce((sum, item) => sum + Number(item[key] || 0), 0) / list.length); }
 
 function Screen({ children }) {
@@ -276,7 +277,7 @@ function Home({ app, setTab }) {
   }
   return <Screen>
     <Header title="Home" sub="Your inner world, at a glance." />
-    <View style={styles.hero}><Image source={logo} style={styles.heroLogo} resizeMode="contain" /><Text style={styles.wordmark}>DRIFTLOOM</Text><Text style={styles.tag}>Capture the fragments. Find the pattern. Turn inner drift into direction.</Text></View>
+    <View testID="home-hero" style={styles.hero}><Image source={logo} style={styles.heroLogo} resizeMode="contain" /><Text style={styles.wordmark}>DRIFTLOOM</Text><Text style={styles.tag}>Capture the fragments. Find the pattern. Turn inner drift into direction.</Text></View>
     <Notice text={notice} />
     <GlassCard><Text style={styles.h2}>Good morning, Jamie ✨</Text><Text style={styles.body}>You're recalling 28% more dreams this week. Keep going.</Text></GlassCard>
     <View style={styles.stats}><Stat label="Dreams" value={stats.count} /><Stat label="Day Streak" value="12" icon="🔥" /><Stat label="Recall" value={`${stats.recall}%`} icon="⌁" /></View>
@@ -434,7 +435,6 @@ function Insights({ app, setTab }) {
     <GlassCard><Text style={styles.h3}>✨ Dream → Creative Pipeline</Text><Text style={styles.body}>Convert any dream into creative output. AI-powered transformation of your dream material.</Text>{creativeFormats.map((f,i)=><Row key={f.title} icon={f.icon} title={f.title} sub={f.desc} right="→" last={i===creativeFormats.length-1} />)}</GlassCard>
     <Section title="Weekly Report" right="PLUS" />
     <GlassCard><Text style={styles.h3}>📊 Weekly Dream Report</Text><View style={styles.stats}><Stat label="Dreams" value={weeklyReportData.dreams} /><Stat label="Vividness" value={weeklyReportData.vividnessAvg} /><Stat label="Recall" value={`${weeklyReportData.recallRate}%`} /></View><Row icon="🎭" title={`Top Mood: ${weeklyReportData.topMood}`} sub="Most frequent emotional state this week" /><Row icon="🔑" title={`Top Symbol: ${weeklyReportData.topSymbol}`} sub="Recurring across 3 of 5 dreams" /><Row icon="💡" title="Weekly Insight" sub={weeklyReportData.insight} last /><Text style={[styles.body,{marginTop:8,fontStyle:'italic'}]}>Your vividness is trending {weeklyReportData.vividnessTrend}. {weeklyReportData.lucidCount} lucid dream this week.</Text></GlassCard>
-  </Screen>;
     <Section title="36 Moods" />
     <GlassCard><View style={styles.grid2}>{["Ecstatic","Euphoric","Blissful","Elated","Joyful","Inspired","Radiant","Energized","Motivated","Serene","Grateful","Playful","Curious","Amused","Gentle","Reflective","Pensive","Wistful","Grounded","Tender","Calm","Restless","Uneasy","Nervous","Confused","Melancholy","Lonely","Gloomy","Somber","Fearful","Haunted","Hollow","Anxious","Hopeful","Dreamy","Mysterious"].map(m=><Pill key={m} text={m}/>)}</View></GlassCard>
     <Section title="Dream Achievements" />
@@ -448,6 +448,7 @@ function Insights({ app, setTab }) {
     <GlassCard><View style={styles.grid2}>{[["♈","Aries","Action dreams — chasing, competing"],["♉","Taurus","Sensory dreams — gardens, food"],["♊","Gemini","Communication dreams — conversations"],["♋","Cancer","Home dreams — houses, family, water"],["♌","Leo","Performance dreams — stages, spotlights"],["♍","Virgo","Detail dreams — organizing, puzzles"],["♎","Libra","Balance dreams — scales, mirrors"],["♏","Scorpio","Transformation dreams — death, rebirth"],["♐","Sagittarius","Journey dreams — travel, flying"],["♑","Capricorn","Achievement dreams — climbing"],["♒","Aquarius","Visionary dreams — space, technology"],["♓","Pisces","Oceanic dreams — water, merging"]].map(z=><View key={z[1]} style={{width:'48%',flexDirection:'row',alignItems:'center',gap:8,padding:8,borderRadius:12,backgroundColor:C.card,borderWidth:1,borderColor:'rgba(79,203,255,.08)'}}><Text style={{fontSize:18}}>{z[0]}</Text><View style={{flex:1}}><Text style={[styles.small,{fontWeight:'700'}]}>{z[1]}</Text><Text style={[styles.body,{fontSize:9}]}>{z[2]}</Text></View></View>)}</View></GlassCard>
     <Section title="Opt-in AI Reflection" />
     <GlassCard><Row icon="✦" title="AI interpretation is off" sub="No hidden AI calls. Reflection only with clear consent." right="Private" last /></GlassCard>
+  </Screen>;
 }
 
 function Cycles({ app }) {
@@ -477,7 +478,6 @@ function Cycles({ app }) {
     <GlassCard><Row icon="○" title="New Moon" sub="Set dream intention" /><Row icon="◐" title="First Quarter" sub="Notice choices and crossroads" /><Row icon="●" title="Full Moon" sub="Peak vividness and emotional brightness" /><Row icon="◑" title="Last Quarter" sub="Review, release, integrate" last /></GlassCard>
     <Section title="Tonight's Sleep Outlook" />
     <GlassCard><Row icon="⏰" title="Smart Wake Window" sub="6:45 AM – 7:15 AM. Wake during lighter sleep for better recall." right="On" /><Row icon="📊" title="Sleep Consistency" sub="Keep bedtime within 45 minutes for stronger recall." right="82%" last /></GlassCard>
-  </Screen>;
     <Section title="Sleep Science" />
     <GlassCard><Row icon="🧠" title="REM uses MORE energy than waking" sub="Most metabolically active sleep state" /><Row icon="⏰" title="Same bedtime every night" sub="Your brain craves rhythm — even weekends" /><Row icon="🌡️" title="Drop room temp to 65°F" sub="Increases deep sleep by up to 25%" /><Row icon="📱" title="Blue light suppresses melatonin" sub="Put screens away 90 min before bed" /><Row icon="🔄" title="Sleep cycles are ~90 min" sub="Waking between cycles feels best" /><Row icon="🧠" title="Skills rehearsed in light sleep" sub="Motor learning consolidates in N2" /><Row icon="🫧" title="Glymphatic cleaning in N3" sub="Deep sleep washes brain toxins" /><Row icon="⏱" title="First REM: 10 min, Last: 60+" sub="REM periods grow longer through night" last /></GlassCard>
     <Section title="Chronotype Quiz" />
@@ -490,6 +490,7 @@ function Cycles({ app }) {
     <GlassCard>{[["🌑","New Moon","Blank slate for setting dream intentions.","Setting intentions, planting seeds"],["🌒","Waxing Crescent","Dream recall begins to sharpen.","Building recall, noticing first symbols"],["🌓","First Quarter","Dreams carry choices and crossroads.","Problem-solving, facing inner conflicts"],["🌔","Waxing Gibbous","Dreams grow vivid and emotionally rich.","Vivid dreaming, emotional processing"],["🌕","Full Moon","Maximum illumination. Most vivid dreams.","Lucid dreaming, peak recall, powerful imagery"],["🌖","Waning Gibbous","Integration. Review what dreams revealed.","Dream journaling, integration, gratitude"],["🌗","Last Quarter","Release and forgiveness. Old patterns dissolve.","Release dreams, forgiveness, closure"],["🌘","Waning Crescent","Deep rest and quiet dreaming.","Rest, surrender, subconscious healing"]].map((m,i)=><View key={m[1]} style={{borderBottomWidth:i<7?1:0,borderBottomColor:'rgba(79,203,255,.06)',paddingVertical:10}}><View style={{flexDirection:'row',alignItems:'center',gap:10}}><Text style={{fontSize:22}}>{m[0]}</Text><View style={{flex:1}}><Text style={styles.h3}>{m[1]}</Text><Text style={styles.body}>{m[2]}</Text></View></View><View style={{marginTop:6,paddingHorizontal:8,paddingVertical:4,borderRadius:8,backgroundColor:'rgba(79,203,255,.06)',alignSelf:'flex-start',marginLeft:32}}><Text style={[styles.small,{color:C.blue}]}>BEST FOR: {m[3]}</Text></View></View>)}</GlassCard>
     <Section title="Cycle Rings" />
     <GlassCard><Row icon="◎" title="Sleep Consistency" sub="5 nights aligned" right="82%" /><Row icon="◎" title="Recall Rhythm" sub="Best on weekdays after wind-down" right="72%" /><Row icon="◎" title="Lucid Readiness" sub="Reality checks 3/4 days" right="64%" last /></GlassCard>
+  </Screen>;
 }
 
 function Lucid({ app }) {
@@ -668,7 +669,14 @@ export default function App() {
 
   const app = { dreams, setDreams, fragments, setFragments, draft, setDraft, saveDream, editDream, addFragment, checkin, setCheckin, checks, setChecks, settings, updateSettings, personalMeanings, setPersonalMeanings, symbolCounts, stats, completeness, factIndex, nextFact, affirmationIndex, nextAffirmation, resetData };
   const Current = tabComponents[tab];
-    <SafeAreaView style={[styles.app, { backgroundColor: themeColors.bg[0] }]}>
+  return (
+    <SafeAreaView testID="driftloom-root" style={[styles.app, { backgroundColor: themeColors.bg }]}>
+      <View style={styles.phone}>
+        <Current app={app} setTab={setTab} />
+        <TabBar tab={tab} setTab={setTab} />
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({

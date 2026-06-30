@@ -1,0 +1,17 @@
+# DriftLoom smoke flow — the deterministic E2E release gate.
+#
+# Headless-runnable: no manual taps to start (the openclaw-qa-1 worker invokes
+# this non-interactively). clearState gives a fresh first launch. DriftLoom opens
+# straight to the Home tab (no disclaimer/paywall gate), so the gate is simply:
+# launch (clean) -> assert the app root mounted -> assert we landed on Home.
+#
+# Elements are located BY id (testID -> iOS accessibilityIdentifier), never by
+# visible text, so copy changes don't break the gate.
+appId: com.ocoeestudios.driftloom
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: "driftloom-root"
+- assertVisible:
+    id: "home-hero"
